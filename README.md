@@ -1,10 +1,10 @@
-# 📚 Sistema de Gestión Bibliotecaria y Catálogo Web — Librería & Centro Cultural Minerva, C.A.
+#  Sistema de Gestión Bibliotecaria y Catálogo Web — Librería & Centro Cultural Minerva, C.A.
 
 Sistema integral full-stack compuesto por una **Plataforma Interna de Gestión y Punto de Venta (POS)** y un **Catálogo Web Público en línea**, diseñado para la administración de inventario, facturación con IVA (16%) en divisas (`$`) y Bolívares (`Bs.` a tasa BCV), seguridad de doble factor (2FA con Google Authenticator), auditoría en tiempo real, respaldo/restauración de base de datos y emisión de 9 reportes ejecutivos en PDF.
 
 ---
 
-## 🏛️ Identidad Institucional
+##  Identidad Institucional
 * **Empresa:** Librería & Centro Cultural Minerva, C.A.
 * **Slogan:** *"Espacio del Conocimiento y la Sabiduría"*
 * **R.I.F.:** J-40192837-0
@@ -12,7 +12,7 @@ Sistema integral full-stack compuesto por una **Plataforma Interna de Gestión y
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+##  Tecnologías Utilizadas
 
 ### Frontend (Sistema de Gestión y Web Pública):
 * **React 18 / 19** + **Vite**
@@ -30,7 +30,7 @@ Sistema integral full-stack compuesto por una **Plataforma Interna de Gestión y
 
 ---
 
-## 📂 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```text
 sistema-biblioteca-minerva/
@@ -44,7 +44,7 @@ sistema-biblioteca-minerva/
 
 ---
 
-## 🚀 Instalación y Puesta en Marcha
+##  Instalación y Puesta en Marcha
 
 ### 1. Clonar el repositorio
 ```bash
@@ -78,7 +78,7 @@ Haz doble clic en **`iniciar-sistema.bat`** en la raíz del proyecto para levant
 
 ---
 
-## 📑 Módulos Principales
+##  Módulos Principales
 
 1. **Autenticación de Doble Factor (2FA) y Control de Acceso:**
    * Inicio de sesión en 2 pasos con **Google Authenticator** (código QR único por trabajador y códigos temporales de 6 dígitos cada 30 segundos).
@@ -101,7 +101,7 @@ Haz doble clic en **`iniciar-sistema.bat`** en la raíz del proyecto para levant
 
 ---
 
-## 🔐 Credenciales de Acceso por Defecto (Base de Datos Inicial)
+##  Credenciales de Acceso por Defecto (Base de Datos Inicial)
 
 Cuando el sistema se ejecuta por primera vez en una computadora nueva (o al ejecutar `npm run prisma:seed`), se genera automáticamente la base de datos inicial con las siguientes credenciales de prueba:
 

@@ -1,5 +1,4 @@
-export const API_URL_PUBLICO =
-  import.meta.env.VITE_API_URL || 'http://localhost:4000/api/libros/publico';
+export const API_URL_PUBLICO = 'http://localhost:4000/api/libros/publico';
 export const API_DOLAR_BCV = 'https://ve.dolarapi.com/v1/dolares/oficial';
 export const CACHE_KEY = 'minerva_catalogo_publico_cache_v3';
 

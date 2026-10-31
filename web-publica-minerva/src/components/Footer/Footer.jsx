@@ -1,4 +1,4 @@
-import logo from '../../assets/Logo.png';
+const logo = './Logo.png';
 import IconoWhatsApp from '../IconoWhatsApp/IconoWhatsApp';
 import { UBICACION_NOMBRE, construirLinkWhatsApp } from '../../constants/config';
 import './Footer.css';

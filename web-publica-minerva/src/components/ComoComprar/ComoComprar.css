@@ -1,0 +1,100 @@
+.como-comprar-section {
+  background: #eef2ff;
+  padding: 3.5rem 0;
+  border-top: 1px solid #dbeafe;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.modalidades-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+}
+
+.modalidad-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.modalidad-featured {
+  border: 2px solid var(--minerva-blue);
+  box-shadow: 0 12px 28px rgba(30, 58, 138, 0.1);
+}
+
+.modalidad-step {
+  align-self: flex-start;
+  background: var(--minerva-blue);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+}
+
+.modalidad-step.step-gold {
+  background: var(--minerva-gold);
+}
+
+.modalidad-card h3 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--minerva-navy);
+}
+
+.modalidad-card p {
+  font-size: 0.92rem;
+  color: #334155;
+}
+
+.modalidad-list {
+  padding-left: 1.2rem;
+  font-size: 0.88rem;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn-modalidad-outline {
+  margin-top: auto;
+  display: inline-block;
+  text-align: center;
+  border: 2px solid var(--minerva-blue);
+  color: var(--minerva-blue);
+  text-decoration: none;
+  font-weight: 800;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+}
+
+.btn-modalidad-whatsapp {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  text-align: center;
+  background: var(--whatsapp-green);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 800;
+  padding: 0.75rem 1.2rem;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.btn-modalidad-whatsapp:hover {
+  background: var(--whatsapp-dark);
+}
+
+@media (max-width: 920px) {
+  .modalidades-grid {
+    grid-template-columns: 1fr;
+  }
+}

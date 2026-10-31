@@ -1,0 +1,44 @@
+/* RESET ABSOLUTO: Quita márgenes por defecto del navegador */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Forzar que HTML y BODY ocupen el 100% exacto sin bordes ni espacios */
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+  background-color: #0f172a;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Forzar a #root a ocupar el 100% real de la pantalla y estirarse en columna */
+#root {
+  width: 100% !important;
+  min-width: 100% !important;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: left !important;
+  border: none !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Normalización básica para campos de formulario */
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+}

@@ -1,0 +1,217 @@
+// Schema de Prisma para Sistema de Biblioteca e Inventario
+// Motor de Base de Datos: SQLite (100% portable)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 1. Usuarios del Sistema (Personal / Administradores)
+model Usuario {
+  id                  Int       @id @default(autoincrement())
+  cedula              String    @unique
+  nombre              String
+  fechaNacimiento     String?   // "YYYY-MM-DD"
+  email               String    @unique
+  password            String
+  rol                 String    @default("staff") // "admin" | "staff"
+  estado              String    @default("Activo") // "Activo" | "Inactivo"
+  debeCambiarPassword Boolean   @default(false)
+  totpSecret          String?   // Secreto Base32 para Google Authenticator (TOTP)
+  totpHabilitado      Boolean   @default(false) // true una vez vinculado el código QR
+  intentosFallidos    Int       @default(0) // Contador de intentos fallidos consecutivos
+  bloqueadoHasta      DateTime? // Fecha/hora de desbloqueo tras superar intentos fallidos
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  ventas    Venta[]
+  sesiones  SesionUsuario[]
+  bitacoras Bitacora[]
+}
+
+// 2. Lectores / Clientes de la Biblioteca
+model Lector {
+  id              Int      @id @default(autoincrement())
+  cedula          String   @unique
+  nombre          String
+  fechaNacimiento String?  // "YYYY-MM-DD"
+  correo          String
+  telefono        String
+  direccion       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  ventas    Venta[]
+}
+
+// 3. Empresas Distribuidoras y Proveedores
+model Distribuidor {
+  id        Int      @id @default(autoincrement())
+  rif       String   @unique
+  nombre    String
+  contacto  String
+  correo    String
+  telefono  String
+  direccion String
+  estado    String   @default("Activo") // "Activo" | "Inactivo"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  libros            Libro[]
+  entradasInventario EntradaInventario[]
+}
+
+// 4. Catálogo de Libros
+model Libro {
+  id             Int           @id @default(autoincrement())
+  isbn           String        @unique
+  titulo         String
+  autor          String
+  categoria      String
+  precio         Float         @default(0.0)
+  precioCosto    Float         @default(0.0)
+  ejemplares     Int           @default(0) // Stock disponible
+  portada        String?
+  distribuidorId Int?
+  distribuidor   Distribuidor? @relation(fields: [distribuidorId], references: [id], onDelete: SetNull)
+  activo         Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  entradasInventario EntradaInventario[]
+  ajustesInventario  AjusteInventario[]
+  detallesVenta      DetalleVenta[]
+}
+
+// 5. Historial de Entradas / Reabastecimiento de Stock (Compras a Distribuidores)
+model EntradaInventario {
+  id                  Int          @id @default(autoincrement())
+  libroId             Int
+  libro               Libro        @relation(fields: [libroId], references: [id], onDelete: Cascade)
+  distribuidorId      Int
+  distribuidor        Distribuidor @relation(fields: [distribuidorId], references: [id], onDelete: Restrict)
+  cantidadIngresada   Int
+  costoUnitario       Float        @default(0.0)
+  costoTotal          Float        @default(0.0)
+  nroFacturaProveedor String
+  fecha               String
+  hora                String?
+  observaciones       String?
+  responsable         String?      @default("Administrador")
+  createdAt           DateTime     @default(now())
+}
+
+// 6. Historial de Ajustes / Bajas de Inventario (Mermas, Daños, Pérdidas)
+model AjusteInventario {
+  id                 Int      @id @default(autoincrement())
+  libroId            Int
+  libro              Libro    @relation(fields: [libroId], references: [id], onDelete: Cascade)
+  cantidadDescontada Int
+  motivo             String   // "Dañado / Deteriorado", "Pérdida / Extravío", "Desincorporación", "Error de Conteo"
+  observaciones      String?
+  fecha              String
+  hora               String?
+  responsable        String?  @default("Administrador")
+  createdAt          DateTime @default(now())
+}
+
+// 7. Registro de Ventas (Punto de Venta)
+model Venta {
+  id             Int            @id @default(autoincrement())
+  nroFactura     String         @unique
+  fecha          String
+  hora           String
+  clienteId      Int?
+  cliente        Lector?        @relation(fields: [clienteId], references: [id], onDelete: SetNull)
+  usuarioId      Int?
+  usuario        Usuario?       @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+  metodoPago     String         // "Punto de Venta", "Pago Móvil", "Efectivo", "Transferencia", "Divisas"
+  referenciaPago String?
+  subtotal       Float          @default(0.0)   // Base Imponible en USD ($) sin IVA
+  porcentajeIva  Float          @default(16.0)  // Alícuota IVA Venezuela (16%)
+  montoIva       Float          @default(0.0)   // Monto IVA (16%) en USD ($)
+  total          Float          // Total Final con IVA en USD ($)
+  tasaCambio     Float          @default(36.50) // Tasa del día aplicada (Bs./USD)
+  totalBs        Float          @default(0.0)   // Total Final con IVA en Bolívares (Bs.)
+  totalArticulos Int
+  atendidoPor    String?
+  createdAt      DateTime       @default(now())
+
+  items          DetalleVenta[]
+}
+
+// 8. Detalle de Ítems de Venta
+model DetalleVenta {
+  id             Int      @id @default(autoincrement())
+  ventaId        Int
+  venta          Venta    @relation(fields: [ventaId], references: [id], onDelete: Cascade)
+  libroId        Int
+  libro          Libro    @relation(fields: [libroId], references: [id], onDelete: Restrict)
+  titulo         String
+  autor          String
+  precioUnitario Float
+  cantidad       Int
+  subtotal       Float
+}
+
+// 9. Categorías / Géneros Literarios del Sistema
+model Categoria {
+  id          Int      @id @default(autoincrement())
+  nombre      String   @unique
+  descripcion String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// 10. Sesiones de Usuario (Conexión y Desconexión)
+model SesionUsuario {
+  id              Int       @id @default(autoincrement())
+  usuarioId       Int
+  usuario         Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuarioNombre   String
+  usuarioRol      String
+  fechaInicio     String    // "YYYY-MM-DD"
+  horaInicio      String    // "HH:MM:SS"
+  fechaFin        String?   // "YYYY-MM-DD"
+  horaFin         String?   // "HH:MM:SS"
+  activo          Boolean   @default(true)
+  ultimaActividad DateTime  @default(now())
+  ip              String?
+  createdAt       DateTime  @default(now())
+}
+
+// 11. Bitácora / Auditoría de Eventos
+model Bitacora {
+  id            Int       @id @default(autoincrement())
+  usuarioId     Int?
+  usuario       Usuario?  @relation(fields: [usuarioId], references: [id], onDelete: SetNull)
+  usuarioNombre String
+  usuarioRol    String
+  modulo        String    // "VENTAS", "INVENTARIO", "LIBROS", "GENEROS", "USUARIOS", "AUTH", "CLIENTES"
+  accion        String    // "CREAR", "EDITAR", "ELIMINAR", "LOGIN", "LOGOUT", "VENTA", "ENTRADA_STOCK", "BAJA_STOCK", "CAMBIO_PASSWORD"
+  descripcion   String
+  detalles      String?   // JSON serializado con información contextual
+  fecha         String    // "YYYY-MM-DD"
+  hora          String    // "HH:MM:SS"
+  createdAt     DateTime  @default(now())
+}
+
+// 12. Métodos de Pago del Sistema
+model MetodoPago {
+  id                 Int      @id @default(autoincrement())
+  nombre             String   @unique
+  etiqueta           String
+  icono              String   @default("💳")
+  requiereReferencia Boolean  @default(true)
+  esBase             Boolean  @default(false)
+  activo             Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+
+

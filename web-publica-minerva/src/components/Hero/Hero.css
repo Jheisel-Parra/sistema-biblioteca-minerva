@@ -1,0 +1,126 @@
+.hero-minerva {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 65%, #172554 100%);
+  color: #ffffff;
+  padding: 4.25rem 0;
+  border-bottom: 4px solid var(--minerva-gold-bright);
+}
+
+.hero-centered {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fde68a;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.hero-centered h1 {
+  font-size: clamp(2rem, 3.6vw, 2.85rem);
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.hero-centered p {
+  font-size: 1.04rem;
+  color: #cbd5e1;
+  margin-bottom: 1.65rem;
+  max-width: 680px;
+}
+
+.hero-centered p strong {
+  color: #ffffff;
+}
+
+.hero-search-box {
+  display: flex;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 0.35rem;
+  width: 100%;
+  max-width: 620px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+}
+
+.hero-search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: #0f172a;
+  border-radius: 8px;
+}
+
+.btn-hero-search {
+  background: var(--minerva-blue);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.35rem;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.btn-hero-search:hover {
+  background: var(--minerva-navy);
+}
+
+.hero-quick-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary-gold {
+  background: var(--minerva-gold-bright);
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.92rem;
+  padding: 0.78rem 1.4rem;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.3);
+}
+
+.btn-primary-gold:hover {
+  background: #fbbf24;
+  transform: translateY(-1px);
+}
+
+.btn-outline-light {
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #f8fafc;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.75rem 1.3rem;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+}

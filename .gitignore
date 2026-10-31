@@ -1,0 +1,26 @@
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables
+.env
+*/.env
+
+# Build outputs
+dist/
+dist-ssr/
+*/dist/
+
+# SQLite Databases & backups
+*.db
+*.db-journal
+prisma/*.db
+*/prisma/*.db
+
+# OS Files
+.DS_Store
+Thumbs.db

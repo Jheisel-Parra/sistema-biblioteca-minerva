@@ -1,0 +1,123 @@
+.modal-libro-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-libro-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 780px;
+  border-radius: 16px;
+  padding: 1.75rem;
+  position: relative;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+}
+
+.modal-libro-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.modal-libro-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.6rem;
+  align-items: start;
+}
+
+.modal-libro-img-box {
+  border-radius: 12px;
+  overflow: hidden;
+  height: 330px;
+  background: #0f172a;
+}
+
+.modal-libro-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-libro-info .libro-categoria-tag {
+  position: static;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.modal-libro-info h2 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--minerva-navy);
+  margin-bottom: 0.35rem;
+}
+
+.modal-libro-autor,
+.modal-libro-isbn {
+  font-size: 0.9rem;
+  color: #475569;
+  margin-bottom: 0.25rem;
+}
+
+.modal-stock-panel,
+.modal-precio-panel {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  margin: 0.85rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+}
+
+.modal-stock-panel > div,
+.modal-precio-panel > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-usd {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--minerva-navy);
+}
+
+.modal-bs {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--minerva-blue);
+}
+
+.modal-libro-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 920px) {
+  .modal-libro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-libro-img-box {
+    height: 220px;
+  }
+}

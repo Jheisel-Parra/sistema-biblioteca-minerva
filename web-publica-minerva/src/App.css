@@ -1,0 +1,136 @@
+/* ==========================================================================
+   ESTILOS BASE GLOBALES: PORTAL WEB PÚBLICO LIBRERÍA MINERVA
+   (Cada componente tiene su propio archivo CSS modular en src/components/)
+   ========================================================================== */
+
+:root {
+  --minerva-navy: #0f172a;
+  --minerva-blue: #1e3a8a;
+  --minerva-blue-light: #2563eb;
+  --minerva-gold: #d97706;
+  --minerva-gold-bright: #f59e0b;
+  --minerva-bg: #f8fafc;
+  --minerva-surface: #ffffff;
+  --minerva-border: #e2e8f0;
+  --minerva-text: #0f172a;
+  --minerva-muted: #475569;
+  --whatsapp-green: #16a34a;
+  --whatsapp-dark: #15803d;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  color: var(--minerva-text);
+  background-color: var(--minerva-bg);
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ENCABEZADOS DE SECCIÓN REUTILIZABLES */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+
+.section-header.centered {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 2.25rem auto;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: var(--minerva-blue);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.3rem;
+}
+
+.section-header h2 {
+  font-size: 1.85rem;
+  font-weight: 900;
+  color: var(--minerva-navy);
+  margin-bottom: 0.35rem;
+}
+
+.section-header p {
+  color: var(--minerva-muted);
+  font-size: 0.95rem;
+}
+
+/* BOTONES Y UTILIDADES COMPARTIDAS */
+.text-green {
+  color: #15803d;
+}
+
+.text-red {
+  color: #dc2626;
+}
+
+.btn-comprar-whatsapp {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--whatsapp-green);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.76rem;
+  padding: 0.52rem 0.75rem;
+  border-radius: 7px;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.btn-comprar-whatsapp:hover {
+  background: var(--whatsapp-dark);
+}
+
+.btn-comprar-fisico {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: var(--minerva-navy);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.74rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 7px;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.btn-comprar-fisico:hover {
+  background: var(--minerva-blue);
+  border-color: var(--minerva-blue);
+  color: #ffffff;
+}

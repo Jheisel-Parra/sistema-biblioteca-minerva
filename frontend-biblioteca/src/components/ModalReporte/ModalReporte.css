@@ -1,0 +1,1097 @@
+/* =======================================================
+   ESTILOS DE MODAL Y PLANTILLA PDF DE REPORTES MINERVA
+   ======================================================= */
+
+.modal-reporte-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 0.75rem 1rem;
+}
+
+.modal-reporte-window {
+  background: #f8fafc;
+  width: 100%;
+  max-width: 96vw;
+  max-height: 94vh;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalReporteIn 0.25s ease-out;
+}
+
+@keyframes modalReporteIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Barra Superior de Control en Pantalla (No se imprime) */
+.reporte-control-bar {
+  background: #0f172a;
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.reporte-control-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.reporte-control-title h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.reporte-badge-categoria {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-cat-operativo { background: #10b981; color: white; }
+.badge-cat-gerencial { background: #3b82f6; color: white; }
+.badge-cat-supervision { background: #8b5cf6; color: white; }
+.badge-cat-prediccion { background: #d97706; color: white; }
+
+.reporte-control-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.reporte-orientacion-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #1e293b;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #334155;
+}
+
+.orientacion-label {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  font-weight: 600;
+  margin-right: 0.15rem;
+}
+
+.btn-orientacion {
+  background: transparent;
+  border: none;
+  color: #cbd5e1;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-orientacion:hover {
+  background: #334155;
+  color: white;
+}
+
+.btn-orientacion.active {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-reporte-print {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.btn-reporte-print:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.btn-reporte-close {
+  background: #334155;
+  color: #cbd5e1;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-reporte-close:hover {
+  background: #475569;
+  color: white;
+}
+
+/* Barra Interactiva de Rango de Fechas Libre */
+.reporte-filter-bar {
+  background: white;
+  padding: 1rem 1.8rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.reporte-date-picker-group {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.date-input-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-input-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.date-input-control {
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.date-input-control:focus {
+  border-color: #1e3a8a;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.12);
+}
+
+.badge-rango-calculado {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.date-quick-helpers {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.date-quick-helpers span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-right: 0.2rem;
+}
+
+.btn-date-helper {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-date-helper:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.btn-date-helper-clear {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #e11d48;
+}
+
+.btn-date-helper-clear:hover {
+  background: #ffe4e6;
+  color: #be123c;
+}
+
+
+/* Contenedor del Documento Imprimible */
+.reporte-document-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem 1.25rem;
+  background: #e2e8f0;
+}
+
+.reporte-sheet {
+  background: white;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1.85rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #0f172a;
+  transition: max-width 0.25s ease;
+  box-sizing: border-box;
+}
+
+.reporte-sheet.sheet-landscape {
+  max-width: 100%;
+}
+
+/* Membrete Oficial Minerva */
+.membrete-minerva {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #1e3a8a;
+  gap: 1.25rem;
+}
+
+.membrete-logo-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.membrete-logo {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.membrete-empresa-nombre {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  margin: 0 0 0.15rem 0;
+  letter-spacing: 0.5px;
+}
+
+.membrete-slogan {
+  margin: 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: #475569;
+  font-weight: 500;
+}
+
+.membrete-rif {
+  margin: 0.2rem 0 0 0;
+  font-size: 0.76rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.membrete-metadatos {
+  text-align: right;
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.membrete-metadatos strong {
+  color: #0f172a;
+}
+
+/* Título y Explicación del Reporte */
+.reporte-header-box {
+  margin: 1rem 0 0.85rem 0;
+  padding: 0.85rem 1.2rem;
+  background: #f8fafc;
+  border-left: 4px solid #1e3a8a;
+  border-radius: 0 8px 8px 0;
+}
+
+.reporte-titulo-doc {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.reporte-periodo-tag {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #1e3a8a;
+  background: #eff6ff;
+  padding: 0.18rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+}
+
+.reporte-explicacion {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: #334155;
+}
+
+/* Tarjetas de Resumen Numérico Dentro del Reporte */
+.reporte-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.reporte-kpi-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  text-align: center;
+}
+
+.reporte-kpi-card span {
+  display: block;
+  font-size: 0.7rem;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.15rem;
+}
+
+.reporte-kpi-card strong {
+  display: block;
+  font-size: 1.12rem;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.reporte-kpi-card .kpi-sub-bs {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin-top: 0.12rem;
+}
+
+/* Celdas de Monto Dual ($ USD + Bs.) */
+.celda-monto-dual {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+}
+
+.celda-monto-dual .monto-usd {
+  font-weight: 700;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.celda-monto-dual .monto-bs {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+
+/* Tabla Estructurada del Reporte — Ajustada al 100% sin scroll horizontal */
+.reporte-table-container {
+  margin-bottom: 1.25rem;
+  width: 100%;
+  overflow-x: visible;
+}
+
+.reporte-table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+  line-height: 1.3;
+}
+
+.reporte-table th {
+  background: #1e3a8a;
+  color: white;
+  font-weight: 700;
+  padding: 0.45rem 0.5rem;
+  text-align: left;
+  border: 1px solid #1e3a8a;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  vertical-align: middle;
+  font-size: 0.74rem;
+}
+
+.reporte-table th.num,
+.reporte-table td.num {
+  text-align: right;
+  white-space: normal;
+}
+
+.reporte-table td {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.reporte-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.reporte-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.reporte-table tfoot tr {
+  background: #f1f5f9;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.reporte-table tfoot td {
+  border-top: 2px solid #1e3a8a;
+  padding: 0.55rem 0.55rem;
+}
+
+/* =======================================================
+   SECCIÓN DE GRÁFICA VISUAL AL FINAL DEL REPORTE
+   (GRÁFICA DE PASTEL + GRÁFICA DE TUBITOS)
+   ======================================================= */
+.reporte-grafica-section {
+  margin: 1.25rem 0 1.5rem 0;
+  padding: 1.15rem 1.35rem;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+.reporte-grafica-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1.5px solid #cbd5e1;
+}
+
+.reporte-grafica-titulo {
+  margin: 0 0 0.2rem 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.reporte-grafica-sub {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.reporte-grafica-total-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  color: #1e3a8a;
+}
+
+.reporte-grafica-total-badge strong {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.reporte-grafica-total-badge small {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.reporte-grafica-body {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 1.15rem;
+  align-items: stretch;
+}
+
+.reporte-grafica-body.grafica-single-col {
+  grid-template-columns: 1fr;
+}
+
+.grafica-pastel-card,
+.grafica-tubitos-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.95rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.grafica-card-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #1e3a8a;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px dashed #cbd5e1;
+}
+
+/* Gráfica de Pastel (Donut SVG + Leyenda) */
+.grafica-pastel-content {
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  flex: 1;
+}
+
+.pastel-svg-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.pastel-donut-svg {
+  width: 140px;
+  height: 140px;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* Nota importante: el viewBox es 0 0 42 42, por lo que el font-size está en unidades SVG */
+.pastel-center-top {
+  font-size: 5.2px;
+  font-weight: 800;
+  fill: #0f172a;
+}
+
+.pastel-center-sub {
+  font-size: 3.2px;
+  font-weight: 700;
+  fill: #64748b;
+}
+
+.pastel-leyenda-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.pastel-leyenda-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  line-height: 1.25;
+  padding: 0.22rem 0.4rem;
+  border-radius: 5px;
+  background: #f8fafc;
+}
+
+.leyenda-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.leyenda-nombre {
+  font-weight: 600;
+  color: #1e293b;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leyenda-pct {
+  font-size: 0.75rem;
+  color: #0f172a;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Gráfica de Tubitos / Barras Proporcionales */
+.tubitos-bars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  justify-content: center;
+  flex: 1;
+}
+
+.tubito-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tubito-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: 0.76rem;
+}
+
+.tubito-label {
+  font-weight: 700;
+  color: #1e293b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tubito-valores {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.tubito-valores strong {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.tubito-bs {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.tubito-pct-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #334155;
+  background: #e2e8f0;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  margin-left: 0.15rem;
+}
+
+.tubito-track {
+  width: 100%;
+  height: 12px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.tubito-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+@media (max-width: 860px) {
+  .reporte-grafica-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pie de Página y Numeración */
+.reporte-footer {
+  margin-top: 1.5rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid #cbd5e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.74rem;
+  color: #64748b;
+}
+
+.reporte-firmas-box {
+  display: flex;
+  justify-content: space-around;
+  margin: 2.2rem 0 1rem 0;
+  padding-top: 0.5rem;
+}
+
+.linea-firma {
+  width: 200px;
+  border-top: 1px solid #94a3b8;
+  text-align: center;
+  padding-top: 0.4rem;
+  font-size: 0.76rem;
+  color: #475569;
+}
+
+/* =======================================================
+   REGLAS ESPECÍFICAS DE IMPRESIÓN Y GUARDADO EN PDF
+   ======================================================= */
+@media print {
+  /* 1. Resetear márgenes y fondos de la ventana */
+  html, body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* 2. Ocultar TODO lo que NO sea el documento del reporte cuando el modal de reporte está activo */
+  body:has(.modal-reporte-overlay) #root > .app-layout > *:not(main),
+  body:has(.modal-reporte-overlay) .app-layout > *:not(main),
+  body:has(.modal-reporte-overlay) .sidebar,
+  body:has(.modal-reporte-overlay) .mobile-topbar,
+  body:has(.modal-reporte-overlay) .user-session-bar,
+  body:has(.modal-reporte-overlay) .no-print,
+  body:has(.modal-reporte-overlay) .reporte-control-bar,
+  body:has(.modal-reporte-overlay) .reporte-filter-bar,
+  body:has(.modal-reporte-overlay) .centro-reportes-container,
+  body:has(.modal-reporte-overlay) .page-container,
+  body:has(.modal-reporte-overlay) .metricas-container,
+  body:has(.modal-reporte-overlay) .historial-ventas-container,
+  body:has(.modal-reporte-overlay) .main-content > *:not(.modal-reporte-overlay) {
+    display: none !important;
+  }
+
+  /* 3. Aplanar contenedores del modal a flujo natural sin alto ni padding sobrante */
+  .modal-reporte-overlay {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    border: none !important;
+  }
+
+  .modal-reporte-window {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+    border: none !important;
+  }
+
+  .reporte-document-scroll {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    overflow: visible !important;
+  }
+
+  /* 4. Hoja formal del Reporte */
+  .reporte-sheet {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  /* 5. Ajustes proporcionales para optimizar espacio vertical */
+  .membrete-minerva {
+    margin-bottom: 0.5rem !important;
+    padding-bottom: 0.45rem !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .membrete-logo {
+    height: 44px !important;
+    width: auto !important;
+  }
+
+  .membrete-empresa-nombre {
+    font-size: 1.1rem !important;
+    margin: 0 0 0.1rem 0 !important;
+  }
+
+  .membrete-slogan {
+    font-size: 0.72rem !important;
+    margin: 0 !important;
+  }
+
+  .membrete-rif {
+    font-size: 0.68rem !important;
+    margin: 0.1rem 0 0 0 !important;
+  }
+
+  .membrete-metadatos {
+    font-size: 0.7rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .reporte-header-box {
+    padding: 0.45rem 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .reporte-titulo-doc {
+    font-size: 0.84rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .reporte-periodo-tag {
+    font-size: 0.68rem !important;
+    padding: 0.15rem 0.45rem !important;
+  }
+
+  .reporte-explicacion {
+    font-size: 0.7rem !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+  }
+
+  .reporte-kpi-grid {
+    gap: 0.4rem !important;
+    margin-bottom: 0.6rem !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .reporte-kpi-card {
+    padding: 0.3rem 0.45rem !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .reporte-kpi-card span {
+    font-size: 0.62rem !important;
+    margin-bottom: 0.08rem !important;
+  }
+
+  .reporte-kpi-card strong {
+    font-size: 0.95rem !important;
+  }
+
+  .reporte-kpi-card .kpi-sub-bs {
+    font-size: 0.64rem !important;
+  }
+
+  /* 6. Tabla optimizada para impresión (evita cortes horizontales) */
+  .reporte-table-container {
+    margin-bottom: 0.7rem !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  .reporte-table {
+    width: 100% !important;
+    table-layout: auto !important;
+    font-size: 0.68rem !important;
+    line-height: 1.2 !important;
+    page-break-inside: auto;
+    break-inside: auto;
+    border-collapse: collapse !important;
+  }
+
+  .reporte-table th {
+    padding: 0.3rem 0.35rem !important;
+    font-size: 0.68rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.15 !important;
+    vertical-align: middle !important;
+  }
+
+  .reporte-table td {
+    padding: 0.28rem 0.35rem !important;
+    font-size: 0.68rem !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    vertical-align: middle !important;
+    line-height: 1.2 !important;
+  }
+
+  .reporte-table th.num,
+  .reporte-table td.num {
+    text-align: right !important;
+    white-space: normal !important;
+  }
+
+  .celda-monto-dual .monto-bs {
+    font-size: 0.6rem !important;
+  }
+
+  .reporte-table tfoot td {
+    padding: 0.38rem 0.35rem !important;
+    font-size: 0.7rem !important;
+    font-weight: 800 !important;
+  }
+
+  .reporte-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    page-break-after: auto;
+    break-after: auto;
+  }
+
+  .reporte-table thead {
+    display: table-header-group;
+  }
+
+  .reporte-table tfoot {
+    display: table-footer-group;
+  }
+
+  /* 7. Gráficas en Impresión */
+  .reporte-grafica-section {
+    margin: 0.75rem 0 0.9rem 0 !important;
+    padding: 0.75rem 0.9rem !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .reporte-grafica-body {
+    grid-template-columns: 1fr 1.25fr !important;
+    gap: 0.75rem !important;
+  }
+
+  .reporte-grafica-body.grafica-single-col {
+    grid-template-columns: 1fr !important;
+  }
+
+  .pastel-donut-svg {
+    width: 115px !important;
+    height: 115px !important;
+  }
+
+  .pastel-center-top {
+    font-size: 5.2px !important;
+  }
+
+  .pastel-center-sub {
+    font-size: 3.2px !important;
+  }
+
+  .leyenda-dot,
+  .tubito-track,
+  .tubito-fill {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .tubito-track {
+    height: 10px !important;
+  }
+
+  /* 8. Firmas y pie de página */
+  .reporte-firmas-box {
+    margin-top: 1.2rem !important;
+    margin-bottom: 0.6rem !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .linea-firma {
+    width: 170px !important;
+    font-size: 0.68rem !important;
+    padding-top: 0.25rem !important;
+  }
+
+  .reporte-footer {
+    margin-top: 0.75rem !important;
+    padding-top: 0.35rem !important;
+    font-size: 0.65rem !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}

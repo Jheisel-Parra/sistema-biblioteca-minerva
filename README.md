@@ -44,7 +44,7 @@ sistema-biblioteca-minerva/
 
 ---
 
-##  Instalación y Puesta en Marcha
+##  Instalación 
 
 ### 1. Clonar el repositorio
 ```bash

@@ -1,11 +1,12 @@
 import { useState, useMemo } from 'react';
 import './CentroReportes.css';
+import Icono from '../../components/Icono/Icono';
 
 const METODOS_PAGO_DEFAULT = [
-  { id: 'punto-venta', nombre: 'Punto de Venta', icono: '💳' },
-  { id: 'pago-movil', nombre: 'Pago Móvil', icono: '📱' },
-  { id: 'transferencia', nombre: 'Transferencia Bancaria', icono: '🏦' },
-  { id: 'efectivo', nombre: 'Efectivo', icono: '💵' }
+  { id: 'punto-venta', nombre: 'Punto de Venta', icono: 'tarjeta' },
+  { id: 'pago-movil', nombre: 'Pago Móvil', icono: 'movil' },
+  { id: 'transferencia', nombre: 'Transferencia Bancaria', icono: 'banco' },
+  { id: 'efectivo', nombre: 'Efectivo', icono: 'dolar' }
 ];
 
 export default function CentroReportes({
@@ -229,7 +230,6 @@ export default function CentroReportes({
 
   // Filtrar según pestaña seleccionada y permisos de rol
   const reportesVisibles = reportes.filter((r) => {
-    // Si el usuario es staff, ocultar de forma estricta los gerenciales, supervisión y predicciones
     if (!esAdmin && (r.categoria === 'gerencial' || r.categoria === 'supervision' || r.categoria === 'prediccion')) {
       return false;
     }
@@ -243,7 +243,7 @@ export default function CentroReportes({
       <div className="centro-reportes-header">
         <div className="centro-reportes-title">
           <h1>Centro de Reportes y Documentos Oficiales</h1>
-          <p>Librería & Centro Cultural Minerva — Emisión de reportes estructurados listos para imprimir o guardar en PDF</p>
+          <p>Librería & Centro Cultural Minerva — Emisión de reportes estructurados listos para imprimir, guardar en PDF o exportar a Excel</p>
         </div>
         <span className="centro-reportes-tag">
           Módulo Exclusivo de Administrador (10 Reportes)
@@ -441,7 +441,8 @@ export default function CentroReportes({
                 className="btn-launch-report"
                 onClick={() => onAbrirReporte(rep.id, { fechaInicio, fechaFin, filtroMetodoPago })}
               >
-                📄 Generar PDF
+                <Icono nombre="documento" size={16} />
+                <span>Generar PDF</span>
               </button>
               <button
                 type="button"
@@ -456,7 +457,8 @@ export default function CentroReportes({
                 }
                 title="Descargar directamente la tabla de este reporte en formato Microsoft Excel (.xls)"
               >
-                📊 Exportar Excel
+                <Icono nombre="excel" size={16} />
+                <span>Exportar Excel</span>
               </button>
             </div>
           </div>

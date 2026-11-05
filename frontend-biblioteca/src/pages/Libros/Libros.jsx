@@ -8,6 +8,7 @@ import {
   apiEliminarCategoria
 } from '../../services/api';
 import { capitalizarPalabras } from '../../utils/formatoTexto';
+import Icono from '../../components/Icono/Icono';
 
 const CATEGORIAS_LIBROS = [
   'Novela',
@@ -189,7 +190,7 @@ export default function Libros({
 
   const handleEliminarGenero = async (cat) => {
     if (cat.tieneVentas) {
-      alert(`🔒 No se puede eliminar el género "${cat.nombre}" porque ya cuenta con ventas y facturas registradas.`);
+      alert(`No se puede eliminar el género "${cat.nombre}" porque ya cuenta con ventas y facturas registradas.`);
       return;
     }
 
@@ -359,7 +360,7 @@ export default function Libros({
       {/* Encabezado */}
       <div className="page-header">
         <div>
-          <h2>📚 Catálogo de Libros</h2>
+          <h2>Catálogo de Libros</h2>
           <p>
             {esAdmin 
               ? 'Consulta el catálogo, precios de venta al público, costos de compra a proveedores y administra el inventario.' 
@@ -375,7 +376,7 @@ export default function Libros({
                   style={{ padding: '0.65rem 0.95rem', fontSize: '0.88rem', borderRadius: '8px', cursor: 'pointer', background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', fontWeight: 700 }}
                   title="Generar reporte de libros con stock bajo o agotados"
                 >
-                  ⚠️ Reporte Stock Crítico
+                  <Icono nombre="alerta" size={15} style={{ marginRight: "5px" }} />Reporte Stock Crítico
                 </button>
                 <button 
                   type="button" 
@@ -383,7 +384,7 @@ export default function Libros({
                   style={{ padding: '0.65rem 0.95rem', fontSize: '0.88rem', borderRadius: '8px', cursor: 'pointer', background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1d4ed8', fontWeight: 700 }}
                   title="Generar catálogo oficial de existencias por género"
                 >
-                  📚 Reporte Catálogo
+                  <Icono nombre="libros" size={15} style={{ marginRight: "5px" }} />Reporte Catálogo
                 </button>
               </>
             )}
@@ -401,7 +402,7 @@ export default function Libros({
                   style={{ padding: '0.65rem 1rem', fontSize: '0.9rem', borderRadius: '8px', cursor: 'pointer', background: '#f8fafc', border: '1px solid #cbd5e1', color: '#1e293b', fontWeight: 600 }}
                   title="Administrar géneros y categorías literarias"
                 >
-                  🏷️ Gestionar Géneros
+                  <Icono nombre="etiqueta" size={15} style={{ marginRight: "5px" }} />Gestionar Géneros
                 </button>
                 <button className="btn-primary" onClick={() => setMostrarModal(true)}>
                   + Nuevo Libro
@@ -482,7 +483,7 @@ export default function Libros({
                         />
                       ) : (
                         <div className="libro-portada-placeholder">
-                          📖
+                          <Icono nombre="libro" size={18} />
                         </div>
                       )}
                     </td>
@@ -490,7 +491,7 @@ export default function Libros({
                       <div>{libro.titulo}</div>
                       {libro.distribuidor && (
                         <span className="text-muted" style={{ fontSize: '0.75rem', fontWeight: 'normal', display: 'block', marginTop: '2px' }}>
-                          🏢 {libro.distribuidor}
+                          <Icono nombre="edificio" size={12} style={{ marginRight: "4px" }} />{libro.distribuidor}
                         </span>
                       )}
                     </td>
@@ -545,7 +546,7 @@ export default function Libros({
                           onClick={() => setLibroAEditar({ ...libro, _stockOriginal: Number(libro.ejemplares) || 0 })}
                           title="Editar nombre, portada y datos del libro"
                         >
-                          ✏️ Editar
+                          <Icono nombre="editar" size={13} style={{ marginRight: "4px" }} />Editar
                         </button>
                       </td>
                     )}
@@ -619,7 +620,7 @@ export default function Libros({
                     }}
                     title="Crear un nuevo género literario"
                   >
-                    🏷️ + Género
+                    + Género
                   </button>
                 )}
               </div>
@@ -635,7 +636,7 @@ export default function Libros({
                 <option value="">Seleccionar empresa distribuidora *</option>
                 {distribuidores.filter((d) => d.estado === 'Activo').map((dist) => (
                   <option key={dist.id} value={dist.nombre}>
-                    🏢 {dist.nombre} ({dist.rif})
+                    {dist.nombre} ({dist.rif})
                   </option>
                 ))}
                 {distribuidores.filter((d) => d.estado === 'Activo').length === 0 && (
@@ -663,7 +664,7 @@ export default function Libros({
 
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 600, color: '#0f766e', marginBottom: '4px', display: 'block' }}>
-                    Costo Compra ($) 🔒
+                    Costo Compra ($)
                   </label>
                   <input 
                     type="number" 
@@ -697,7 +698,7 @@ export default function Libros({
 
               {/* Apartado de Portada / Foto */}
               <div className="portada-upload-section">
-                <label className="form-label">🖼️ Foto / Portada del Libro (Opcional):</label>
+                <label className="form-label">Foto / Portada del Libro (Opcional):</label>
                 <div className="portada-upload-controls">
                   <input 
                     type="file" 
@@ -707,7 +708,7 @@ export default function Libros({
                     id="file-portada-input"
                   />
                   <label htmlFor="file-portada-input" className="btn-upload-file">
-                    📁 Subir Imagen
+                    <Icono nombre="imagen" size={14} style={{ marginRight: "5px" }} />Subir Imagen
                   </label>
                   <input 
                     type="url" 
@@ -742,7 +743,7 @@ export default function Libros({
                   onClick={handleLimpiarNuevoLibro}
                   title="Limpiar todos los campos del formulario"
                 >
-                  🧹 Limpiar Campos
+                  Limpiar Campos
                 </button>
                 <button type="button" className="btn-secondary" onClick={() => setMostrarModal(false)}>Cancelar</button>
                 <button type="submit" className="btn-primary">Guardar Libro</button>
@@ -756,7 +757,7 @@ export default function Libros({
       {libroAEditar && (
         <div className="modal-overlay">
           <div className="modal-content" style={{ maxWidth: '520px' }}>
-            <h3>✏️ Editar Libro: {libroAEditar.titulo}</h3>
+            <h3>Editar Libro: {libroAEditar.titulo}</h3>
 
             {errorModalEdit && (
               <div style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', padding: '0.65rem 0.85rem', borderRadius: '6px', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
@@ -843,7 +844,7 @@ export default function Libros({
                       }}
                       title="Crear un nuevo género literario"
                     >
-                      🏷️ + Género
+                      + Género
                     </button>
                   )}
                 </div>
@@ -861,7 +862,7 @@ export default function Libros({
                   <option value="">Seleccionar empresa distribuidora...</option>
                   {distribuidores.map((dist) => (
                     <option key={dist.id} value={dist.nombre}>
-                      🏢 {dist.nombre} {dist.estado !== 'Activo' ? '(Inactivo)' : ''}
+                      {dist.nombre} {dist.estado !== 'Activo' ? '(Inactivo)' : ''}
                     </option>
                   ))}
                   <option value="Distribución Directa">Distribución Directa / Editorial Independiente</option>
@@ -888,7 +889,7 @@ export default function Libros({
 
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 600, color: '#0f766e', marginBottom: '4px', display: 'block' }}>
-                    Costo Compra ($) 🔒
+                    Costo Compra ($)
                   </label>
                   <input 
                     type="number" 
@@ -905,7 +906,7 @@ export default function Libros({
 
                 <div>
                   <label className="form-label" style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: '4px', display: 'block' }}>
-                    Stock Actual 🔒
+                    Stock Actual
                   </label>
                   <input 
                     type="text" 
@@ -921,7 +922,7 @@ export default function Libros({
 
               {/* Apartado de Edición de Portada / Foto */}
               <div className="portada-upload-section">
-                <label className="form-label">🖼️ Foto / Portada del Libro:</label>
+                <label className="form-label">Foto / Portada del Libro:</label>
                 <div className="portada-upload-controls">
                   <input 
                     type="file" 
@@ -931,7 +932,7 @@ export default function Libros({
                     id="file-edit-portada-input"
                   />
                   <label htmlFor="file-edit-portada-input" className="btn-upload-file">
-                    📁 Cambiar Imagen
+                    <Icono nombre="imagen" size={14} style={{ marginRight: "5px" }} />Cambiar Imagen
                   </label>
                   <input 
                     type="url" 
@@ -977,7 +978,7 @@ export default function Libros({
                   }
                   title="Limpiar campos"
                 >
-                  🧹 Limpiar Campos
+                  Limpiar Campos
                 </button>
                 <button type="button" className="btn-secondary" onClick={() => setLibroAEditar(null)}>Cancelar</button>
                 <button type="submit" className="btn-primary">Guardar Cambios</button>
@@ -992,7 +993,7 @@ export default function Libros({
         <div className="modal-overlay">
           <div className="modal-content" style={{ maxWidth: '640px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#0f172a' }}>🏷️ Gestión de Géneros Literarios</h3>
+              <h3 style={{ margin: 0, fontSize: '1.25rem', color: '#0f172a' }}>Gestión de Géneros Literarios</h3>
               <button 
                 type="button" 
                 onClick={() => setMostrarModalGeneros(false)}
@@ -1091,7 +1092,7 @@ export default function Libros({
                                 disabled={guardandoGenero}
                                 style={{ background: '#16a34a', color: '#fff', border: 'none', padding: '0.3rem 0.6rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 600 }}
                               >
-                                💾 Guardar
+                                Guardar
                               </button>
                               <button
                                 type="button"
@@ -1107,7 +1108,7 @@ export default function Libros({
                               style={{ fontSize: '0.72rem', cursor: 'not-allowed' }}
                               title="Protegido: Este género no puede ser editado ni eliminado porque ya tiene facturas y ventas registradas."
                             >
-                              🔒 Bloqueado por Ventas
+                              <Icono nombre="candado" size={12} style={{ marginRight: "4px" }} />Bloqueado por Ventas
                             </span>
                           ) : (
                             <div style={{ display: 'inline-flex', gap: '0.35rem' }}>
@@ -1123,7 +1124,7 @@ export default function Libros({
                                 style={{ background: '#f1f5f9', border: '1px solid #cbd5e1', padding: '0.3rem 0.6rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 500 }}
                                 title="Editar nombre del género (antes de su primera venta)"
                               >
-                                ✏️ Renombrar
+                                Renombrar
                               </button>
                               <button
                                 type="button"
@@ -1131,7 +1132,7 @@ export default function Libros({
                                 style={{ background: '#fee2e2', color: '#dc2626', border: '1px solid #fecaca', padding: '0.3rem 0.6rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 500 }}
                                 title="Eliminar género"
                               >
-                                🗑️ Eliminar
+                                Eliminar
                               </button>
                             </div>
                           )}

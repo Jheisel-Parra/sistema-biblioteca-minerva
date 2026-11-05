@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import './HistorialVentas.css';
 import ModalFactura from '../../components/ModalFactura/ModalFactura';
+import Icono from '../../components/Icono/Icono';
 
 const METODOS_PAGO_DEFAULT = [
-  { id: 'punto-venta', nombre: 'Punto de Venta', icono: '💳' },
-  { id: 'pago-movil', nombre: 'Pago Móvil', icono: '📱' },
-  { id: 'transferencia', nombre: 'Transferencia Bancaria', icono: '🏦' },
-  { id: 'efectivo', nombre: 'Efectivo', icono: '💵' }
+  { id: 'punto-venta', nombre: 'Punto de Venta', icono: 'tarjeta' },
+  { id: 'pago-movil', nombre: 'Pago Móvil', icono: 'movil' },
+  { id: 'transferencia', nombre: 'Transferencia Bancaria', icono: 'banco' },
+  { id: 'efectivo', nombre: 'Efectivo', icono: 'dolar' }
 ];
 
 export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin = false, metodosPago }) {
@@ -70,7 +71,7 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
       {/* Encabezado */}
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2>🧾 Historial de Ventas y Facturación</h2>
+          <h2>Historial de Ventas y Facturación</h2>
           <p>Consulta las transacciones de venta de libros, montos recaudados y reimprime recibos.</p>
         </div>
         {esAdmin && onAbrirReporte && (
@@ -91,7 +92,8 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
               boxShadow: '0 2px 8px rgba(30, 58, 138, 0.25)'
             }}
           >
-            📑 Reporte Arqueo de Caja (PDF)
+            <Icono nombre="reportes" size={16} />
+            <span>Reporte Arqueo de Caja (PDF)</span>
           </button>
         )}
       </div>
@@ -99,7 +101,9 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
       {/* Tarjetas de Métricas de Venta */}
       <div className="metrics-grid">
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#ecfdf5', color: '#059669' }}>💵</div>
+          <div className="metric-icon">
+            <Icono nombre="dolar" size={22} />
+          </div>
           <div className="metric-data">
             <span className="metric-title">Total Facturado (c/IVA)</span>
             <span className="metric-value" style={{ color: '#0f766e' }}>
@@ -109,10 +113,12 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#fef3c7', color: '#d97706' }}>🏛️</div>
+          <div className="metric-icon">
+            <Icono nombre="banco" size={22} />
+          </div>
           <div className="metric-data">
             <span className="metric-title">IVA Recaudado (16%)</span>
-            <span className="metric-value" style={{ color: '#b45309' }}>
+            <span className="metric-value" style={{ color: '#1e3a8a' }}>
               ${totalIvaRecaudado.toFixed(2)}
             </span>
             <small style={{ fontSize: '0.74rem', color: '#64748b' }}>
@@ -122,7 +128,9 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#eff6ff', color: '#2563eb' }}>🧾</div>
+          <div className="metric-icon">
+            <Icono nombre="recibo" size={22} />
+          </div>
           <div className="metric-data">
             <span className="metric-title">Ventas Concretadas</span>
             <span className="metric-value">{ventas.length}</span>
@@ -130,7 +138,9 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#fdf4ff', color: '#a855f7' }}>📚</div>
+          <div className="metric-icon">
+            <Icono nombre="libros" size={22} />
+          </div>
           <div className="metric-data">
             <span className="metric-title">Libros Vendidos</span>
             <span className="metric-value">{totalLibrosVendidos} uds.</span>
@@ -158,7 +168,7 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
             <option value="todos">Todos los pagos</option>
             {metodosDisponibles.map((m) => (
               <option key={m.id || m.nombre} value={m.nombre}>
-                {m.icono || '💳'} {m.nombre}
+                {m.nombre}
               </option>
             ))}
           </select>
@@ -209,6 +219,18 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
                 const cantLibros = v.totalArticulos || (v.items?.reduce((s, i) => s + i.cantidad, 0) || 0);
                 const desglose = obtenerDesgloseVenta(v);
 
+                const obtenerIconoMetodo = () => {
+                  const metodoObj = metodosDisponibles.find(
+                    (m) => m.nombre.toLowerCase() === (v.metodoPago || '').toLowerCase()
+                  );
+                  if (metodoObj?.icono) return metodoObj.icono;
+                  if (v.metodoPago === 'Efectivo') return 'dolar';
+                  if (v.metodoPago === 'Pago Móvil') return 'movil';
+                  if (v.metodoPago === 'Punto de Venta') return 'tarjeta';
+                  if (v.metodoPago?.toLowerCase().includes('transferencia')) return 'banco';
+                  return 'dolar';
+                };
+
                 return (
                   <tr key={v.id}>
                     <td className="text-bold" style={{ fontFamily: 'monospace', color: '#2563eb' }}>
@@ -228,19 +250,9 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
                       </span>
                     </td>
                     <td>
-                      <span className="badge-metodo-pago">
-                        {(() => {
-                          const metodoObj = metodosDisponibles.find(
-                            (m) => m.nombre.toLowerCase() === (v.metodoPago || '').toLowerCase()
-                          );
-                          if (metodoObj?.icono) return `${metodoObj.icono} `;
-                          if (v.metodoPago === 'Efectivo') return '💵 ';
-                          if (v.metodoPago === 'Pago Móvil') return '📱 ';
-                          if (v.metodoPago === 'Punto de Venta') return '💳 ';
-                          if (v.metodoPago?.toLowerCase().includes('transferencia')) return '🏦 ';
-                          return '💸 ';
-                        })()}
-                        {v.metodoPago}
+                      <span className="badge-metodo-pago" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                        <Icono nombre={obtenerIconoMetodo()} size={14} />
+                        <span>{v.metodoPago}</span>
                       </span>
                     </td>
                     <td style={{ textAlign: 'right', fontWeight: 600, color: '#334155' }}>
@@ -261,8 +273,10 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
                         className="btn-action-reprint"
                         onClick={() => setVentaSeleccionada(v)}
                         title="Ver detalle y reimprimir factura"
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}
                       >
-                        🖨️ Reimprimir Recibo
+                        <Icono nombre="imprimir" size={14} />
+                        <span>Reimprimir Recibo</span>
                       </button>
                     </td>
                   </tr>

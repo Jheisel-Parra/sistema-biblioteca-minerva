@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Usuarios.css';
 import { apiCrearLector, apiActualizarLector } from '../../services/api';
 import { capitalizarPalabras } from '../../utils/formatoTexto';
+import Icono from '../../components/Icono/Icono';
 
 const formatearCedula = (str, prefijoForzado = null) => {
   if (!str) return '';
@@ -182,7 +183,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
       {/* Encabezado */}
       <div className="page-header">
         <div>
-          <h2>👥 Lectores</h2>
+          <h2>Lectores</h2>
           <p>Consulta lectores registrados, agrega nuevos lectores, edita sus datos y revisa su historial de compras de libros.</p>
         </div>
         <button className="btn-primary" onClick={() => setMostrarModalNuevo(true)}>
@@ -242,7 +243,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
                     <td>{u.telefono || '—'}</td>
                     <td style={{ textAlign: 'center' }}>
                       <span className="badge-compras-count">
-                        🛒 {compras.length} {compras.length === 1 ? 'compra' : 'compras'}
+                        <Icono nombre="carrito" size={13} style={{ marginRight: "4px" }} />{compras.length} {compras.length === 1 ? 'compra' : 'compras'}
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
@@ -253,7 +254,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
                           onClick={() => setLectorAEditar({ ...u })}
                           title="Editar información del lector"
                         >
-                          ✏️ Editar
+                          <Icono nombre="editar" size={13} style={{ marginRight: "4px" }} />Editar
                         </button>
                         <button
                           type="button"
@@ -261,7 +262,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
                           onClick={() => setUsuarioSeleccionado(u)}
                           title="Ver ficha e historial de compras"
                         >
-                          📄 Compras
+                          <Icono nombre="recibo" size={13} style={{ marginRight: "4px" }} />Compras
                         </button>
                       </div>
                     </td>
@@ -390,7 +391,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
                   onClick={handleLimpiarNuevoUsuario}
                   title="Limpiar campos"
                 >
-                  🧹 Limpiar Campos
+                  Limpiar Campos
                 </button>
                 <button
                   type="button"
@@ -412,7 +413,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
       {lectorAEditar && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3>✏️ Editar Lector</h3>
+            <h3>Editar Lector</h3>
             <form onSubmit={handleGuardarEdicion} className="form-group">
               <div>
                 <label className="form-label">Nombre Completo *</label>
@@ -428,7 +429,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
               </div>
 
               <div>
-                <label className="form-label">Cédula / Documento de Identidad (No editable) 🔒</label>
+                <label className="form-label">Cédula / Documento de Identidad (No editable)</label>
                 <input
                   type="text"
                   name="cedula"
@@ -438,7 +439,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
                   className="form-input form-input-readonly"
                   title="La cédula no se puede modificar por integridad de los registros"
                 />
-                <span className="field-hint">🔒 La cédula es el identificador único del lector y no se puede modificar.</span>
+                <span className="field-hint">La cédula es el identificador único del lector y no se puede modificar.</span>
               </div>
 
               <div>
@@ -485,7 +486,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
                   onClick={() => setLectorAEditar({ ...lectorAEditar, nombre: '', correo: '', telefono: '' })}
                   title="Limpiar campos editables"
                 >
-                  🧹 Limpiar Campos
+                  Limpiar Campos
                 </button>
                 <button
                   type="button"
@@ -507,7 +508,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
       {usuarioSeleccionado && (
         <div className="modal-overlay">
           <div className="modal-content modal-ficha-content">
-            <h3>👤 Ficha del Lector</h3>
+            <h3>Ficha del Lector</h3>
             <div className="ficha-lector-header">
               <div className="ficha-dato-row">
                 <span>Nombre:</span>
@@ -536,7 +537,7 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
             </div>
 
             <h4 className="ficha-compras-title">
-              🧾 Historial de Compras y Facturas
+              Historial de Compras y Facturas
             </h4>
 
             {(() => {
@@ -557,14 +558,14 @@ export default function Usuarios({ usuarios: propUsuarios, setUsuarios: propSetU
                         <div className="compra-items-list">
                           {compra.items && compra.items.map((item, idx) => (
                             <div key={idx} className="compra-item-line">
-                              <span>📖 {item.titulo}</span>
+                              <span><Icono nombre="libro" size={13} style={{ marginRight: "5px", color: "#1e3a8a" }} />{item.titulo}</span>
                               <span className="text-muted">x{item.cantidad} (${Number(item.precio).toFixed(2)})</span>
                             </div>
                           ))}
                         </div>
 
                         <div className="compra-card-bottom">
-                          <span className="badge-metodo-mini">💳 {compra.metodoPago}</span>
+                          <span className="badge-metodo-mini"><Icono nombre="tarjeta" size={12} style={{ marginRight: "4px" }} />{compra.metodoPago}</span>
                           <span className="text-muted" style={{ fontSize: '0.75rem' }}>
                             Atendido por: {compra.atendidoPor || 'Recepción'}
                           </span>

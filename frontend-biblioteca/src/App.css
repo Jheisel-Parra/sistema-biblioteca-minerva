@@ -101,8 +101,10 @@ body {
 }
 
 .user-avatar-badge {
-  font-size: 1.25rem;
-  background: #f1f5f9;
+  font-size: 1.1rem;
+  background: #eff6ff;
+  color: #1e3a8a;
+  border: 1px solid #dbeafe;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -122,9 +124,9 @@ body {
 }
 
 .user-role-pill.role-admin {
-  background-color: #f3e8ff;
-  color: #7e22ce;
-  border: 1px solid #d8b4fe;
+  background-color: #eff6ff;
+  color: #1e3a8a;
+  border: 1px solid #bfdbfe;
 }
 
 .user-role-pill.role-staff {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './AjustesInventario.css';
 import { apiConsultarTasaBCV } from '../../services/api';
+import Icono from '../../components/Icono/Icono';
 
 function crearRegistroAjusteBaja({ libro, cantidad, motivo, observaciones, rolUsuario }) {
   const timestamp = Date.now();
@@ -230,7 +231,7 @@ export default function AjustesInventario({
     }
 
     setMensajeExito(
-      `✅ Se ingresaron exitosamente +${cant} unidades a "${libroEntradaSeleccionado.titulo}" suministradas por ${formularioEntrada.distribuidor}.`
+      `Se ingresaron exitosamente +${cant} unidades a "${libroEntradaSeleccionado.titulo}" suministradas por ${formularioEntrada.distribuidor}.`
     );
     setTimeout(() => setMensajeExito(''), 4500);
 
@@ -281,7 +282,7 @@ export default function AjustesInventario({
     }
 
     setMensajeExito(
-      `✅ Se descontaron correctamente -${cant} unidades de "${libroBajaSeleccionado.titulo}" por motivo: ${formularioBaja.motivo}.`
+      `Se descontaron correctamente -${cant} unidades de "${libroBajaSeleccionado.titulo}" por motivo: ${formularioBaja.motivo}.`
     );
     setTimeout(() => setMensajeExito(''), 4500);
 
@@ -304,7 +305,7 @@ export default function AjustesInventario({
       {/* Encabezado con Panel de Tasa de Cambio */}
       <div className="page-header pos-header-flex">
         <div>
-          <h2>📦 Movimientos y Ajustes de Inventario</h2>
+          <h2>Movimientos y Ajustes de Inventario</h2>
           <p>
             Control integral de entradas (reabastecimiento por distribuidor) y bajas de stock con trazabilidad completa.
           </p>
@@ -314,7 +315,7 @@ export default function AjustesInventario({
         <div className="tasa-admin-widget">
           {!editandoTasa ? (
             <div className="tasa-display-box">
-              <span className="tasa-label">💵 Tasa Oficial BCV:</span>
+              <span className="tasa-label"><Icono nombre="dolar" size={14} style={{ marginRight: "4px" }} />Tasa Oficial BCV:</span>
               <strong className="tasa-valor">Bs. {tasaDelDia.toFixed(2)} / $</strong>
               <button 
                 type="button" 
@@ -323,7 +324,7 @@ export default function AjustesInventario({
                 disabled={consultandoTasa}
                 title="Consultar y sincronizar tasa oficial en vivo desde la API de BCV (requiere internet)"
               >
-                {consultandoTasa ? '⏳ Sincronizando...' : '🔄 Sincronizar BCV'}
+                {consultandoTasa ? 'Sincronizando...' : <><Icono nombre="sincronizar" size={13} style={{ marginRight: "4px" }} />Sincronizar BCV</>}
               </button>
               <button 
                 type="button" 
@@ -331,7 +332,7 @@ export default function AjustesInventario({
                 onClick={() => { setTempTasa(tasaDelDia); setEditandoTasa(true); }}
                 title="Modificar tasa del día manualmente (exclusivo para administradores)"
               >
-                ✏️ Modificar Tasa
+                <Icono nombre="editar" size={13} style={{ marginRight: "4px" }} />Modificar Tasa
               </button>
             </div>
           ) : (
@@ -364,7 +365,7 @@ export default function AjustesInventario({
       {/* DASHBOARD DE MOVIMIENTOS */}
       <div className="metrics-grid">
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#eff6ff', color: '#2563eb' }}>📦</div>
+          <div className="metric-icon"><Icono nombre="caja" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Stock Total en Almacén</span>
             <span className="metric-value">{totalStockActual} uds.</span>
@@ -372,7 +373,7 @@ export default function AjustesInventario({
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#f0fdf4', color: '#16a34a' }}>📈</div>
+          <div className="metric-icon"><Icono nombre="tendencia-up" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Entradas / Reabastecimiento</span>
             <span className="metric-value" style={{ color: '#16a34a' }}>
@@ -382,7 +383,7 @@ export default function AjustesInventario({
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#fef2f2', color: '#dc2626' }}>📉</div>
+          <div className="metric-icon"><Icono nombre="tendencia-down" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Bajas / Mermas Totales</span>
             <span className="metric-value" style={{ color: '#dc2626' }}>
@@ -392,7 +393,7 @@ export default function AjustesInventario({
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#fdf4ff', color: '#a855f7' }}>📚</div>
+          <div className="metric-icon"><Icono nombre="libros" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Títulos en Catálogo</span>
             <span className="metric-value">{libros.length}</span>
@@ -406,25 +407,25 @@ export default function AjustesInventario({
           className={`tab-btn ${pestañaActiva === 'entradas-libros' ? 'active' : ''}`}
           onClick={() => setPestañaActiva('entradas-libros')}
         >
-          📈 Reabastecer Stock (+ Entradas)
+          <Icono nombre="tendencia-up" size={15} style={{ marginRight: "6px" }} />Reabastecer Stock (+ Entradas)
         </button>
         <button
           className={`tab-btn ${pestañaActiva === 'entradas-historial' ? 'active' : ''}`}
           onClick={() => setPestañaActiva('entradas-historial')}
         >
-          🧾 Historial de Entradas ({historialEntradas.length})
+          <Icono nombre="recibo" size={15} style={{ marginRight: "6px" }} />Historial de Entradas ({historialEntradas.length})
         </button>
         <button
           className={`tab-btn ${pestañaActiva === 'bajas-libros' ? 'active' : ''}`}
           onClick={() => setPestañaActiva('bajas-libros')}
         >
-          📉 Registrar Bajas / Mermas
+          <Icono nombre="tendencia-down" size={15} style={{ marginRight: "6px" }} />Registrar Bajas / Mermas
         </button>
         <button
           className={`tab-btn ${pestañaActiva === 'bajas-historial' ? 'active' : ''}`}
           onClick={() => setPestañaActiva('bajas-historial')}
         >
-          📑 Historial de Bajas ({historialAjustes.length})
+          <Icono nombre="reportes" size={15} style={{ marginRight: "6px" }} />Historial de Bajas ({historialAjustes.length})
         </button>
 
         {onAbrirReporte && (
@@ -436,7 +437,7 @@ export default function AjustesInventario({
               style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', fontWeight: 700 }}
               title="Generar reporte formal de mermas y pérdidas"
             >
-              📉 Reporte Mermas (PDF)
+              <Icono nombre="tendencia-down" size={15} style={{ marginRight: "5px" }} />Reporte Mermas (PDF)
             </button>
             <button
               type="button"
@@ -445,7 +446,7 @@ export default function AjustesInventario({
               style={{ background: '#eff6ff', border: '1px solid #bfdbfe', color: '#1d4ed8', fontWeight: 700 }}
               title="Generar balance de compras a distribuidores"
             >
-              🏢 Reporte Compras (PDF)
+              <Icono nombre="edificio" size={15} style={{ marginRight: "5px" }} />Reporte Compras (PDF)
             </button>
           </div>
         )}
@@ -487,7 +488,7 @@ export default function AjustesInventario({
                         {libro.portada ? (
                           <img src={libro.portada} alt={libro.titulo} className="libro-portada-thumb" />
                         ) : (
-                          <div className="libro-portada-placeholder">📖</div>
+                          <div className="libro-portada-placeholder"><Icono nombre="libro" size={16} /></div>
                         )}
                       </td>
                       <td className="text-bold">{libro.titulo}</td>
@@ -495,7 +496,7 @@ export default function AjustesInventario({
                       <td>{libro.categoria}</td>
                       <td>
                         <span className="text-muted" style={{ fontSize: '0.85rem' }}>
-                          🏢 {libro.distribuidor || 'Distribución Directa'}
+                          <Icono nombre="edificio" size={13} style={{ marginRight: "4px" }} />{libro.distribuidor || 'Distribución Directa'}
                         </span>
                       </td>
                       <td className="text-bold">{libro.ejemplares} uds.</td>
@@ -506,7 +507,7 @@ export default function AjustesInventario({
                           onClick={() => abrirModalEntrada(libro)}
                           title="Ingresar nuevo lote de ejemplares para este libro"
                         >
-                          ➕ Ingresar Stock
+                          + Ingresar Stock
                         </button>
                       </td>
                     </tr>
@@ -539,11 +540,11 @@ export default function AjustesInventario({
             return (
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '1.25rem' }}>
                 <div style={{ background: '#f0fdfa', border: '1px solid #ccfbf1', padding: '1rem', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '0.8rem', color: '#0f766e', fontWeight: 600, display: 'block' }}>💵 Total Invertido en Compras (Filtrado)</span>
+                  <span style={{ fontSize: '0.8rem', color: '#0f766e', fontWeight: 600, display: 'block' }}>Total Invertido en Compras (Filtrado)</span>
                   <span style={{ fontSize: '1.4rem', fontWeight: 700, color: '#115e59' }}>${totalInvertido.toFixed(2)}</span>
                 </div>
                 <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '1rem', borderRadius: '8px' }}>
-                  <span style={{ fontSize: '0.8rem', color: '#475569', fontWeight: 600, display: 'block' }}>📦 Total Ejemplares Ingresados</span>
+                  <span style={{ fontSize: '0.8rem', color: '#475569', fontWeight: 600, display: 'block' }}>Total Ejemplares Ingresados</span>
                   <span style={{ fontSize: '1.4rem', fontWeight: 700, color: '#1e293b' }}>{totalUds} unidades</span>
                 </div>
               </div>
@@ -569,7 +570,7 @@ export default function AjustesInventario({
                 <option value="todos">Todos los distribuidores</option>
                 {distribuidores.map((d) => (
                   <option key={d.id} value={d.nombre}>
-                    🏢 {d.nombre}
+                    {d.nombre}
                   </option>
                 ))}
               </select>
@@ -603,7 +604,7 @@ export default function AjustesInventario({
                           {h.libroPortada ? (
                             <img src={h.libroPortada} alt={h.libroTitulo} className="libro-portada-thumb" style={{ width: '30px', height: '42px' }} />
                           ) : (
-                            <div className="libro-portada-placeholder" style={{ width: '30px', height: '42px', fontSize: '0.9rem' }}>📖</div>
+                            <div className="libro-portada-placeholder" style={{ width: '30px', height: '42px', fontSize: '0.9rem' }}><Icono nombre="libro" size={16} /></div>
                           )}
                           <div>
                             <div className="text-bold">{h.libroTitulo}</div>
@@ -624,7 +625,7 @@ export default function AjustesInventario({
                       </td>
                       <td>
                         <span className="badge-distribuidor-tag">
-                          🏢 {h.distribuidor}
+                          <Icono nombre="edificio" size={12} style={{ marginRight: "4px" }} />{h.distribuidor}
                         </span>
                       </td>
                       <td>
@@ -691,7 +692,7 @@ export default function AjustesInventario({
                           {libro.portada ? (
                             <img src={libro.portada} alt={libro.titulo} className="libro-portada-thumb" />
                           ) : (
-                            <div className="libro-portada-placeholder">📖</div>
+                            <div className="libro-portada-placeholder"><Icono nombre="libro" size={16} /></div>
                           )}
                         </td>
                         <td className="text-bold">{libro.titulo}</td>
@@ -711,7 +712,7 @@ export default function AjustesInventario({
                             disabled={!tieneStock}
                             title={tieneStock ? 'Registrar baja de inventario' : 'No hay stock disponible para descontar'}
                           >
-                            📉 Registrar Baja
+                            Registrar Baja
                           </button>
                         </td>
                       </tr>
@@ -784,7 +785,7 @@ export default function AjustesInventario({
                           {h.libroPortada ? (
                             <img src={h.libroPortada} alt={h.libroTitulo} className="libro-portada-thumb" style={{ width: '30px', height: '42px' }} />
                           ) : (
-                            <div className="libro-portada-placeholder" style={{ width: '30px', height: '42px', fontSize: '0.9rem' }}>📖</div>
+                            <div className="libro-portada-placeholder" style={{ width: '30px', height: '42px', fontSize: '0.9rem' }}><Icono nombre="libro" size={16} /></div>
                           )}
                           <div>
                             <div className="text-bold">{h.libroTitulo}</div>
@@ -833,7 +834,7 @@ export default function AjustesInventario({
       {libroEntradaSeleccionado && (
         <div className="modal-overlay">
           <div className="modal-content modal-entrada-content">
-            <h3>📈 Reabastecer Stock / Entrada de Libros</h3>
+            <h3>Reabastecer Stock / Entrada de Libros</h3>
             <p className="modal-subtitle">
               Registra el ingreso de nuevos ejemplares indicando la empresa distribuidora responsable.
             </p>
@@ -843,7 +844,7 @@ export default function AjustesInventario({
               {libroEntradaSeleccionado.portada ? (
                 <img src={libroEntradaSeleccionado.portada} alt={libroEntradaSeleccionado.titulo} className="libro-entrada-thumb" />
               ) : (
-                <div className="libro-entrada-placeholder">📖</div>
+                <div className="libro-entrada-placeholder"><Icono nombre="libro" size={16} /></div>
               )}
               <div>
                 <h4 className="libro-entrada-titulo">{libroEntradaSeleccionado.titulo}</h4>
@@ -858,7 +859,7 @@ export default function AjustesInventario({
 
             {errorModal && (
               <div className="alert-error-modal">
-                ⚠️ {errorModal}
+                <Icono nombre="alerta" size={15} style={{ marginRight: "5px" }} />{errorModal}
               </div>
             )}
 
@@ -879,7 +880,7 @@ export default function AjustesInventario({
                   <option value="">Selecciona la empresa distribuidora...</option>
                   {distribuidores.filter((d) => d.estado === 'Activo').map((d) => (
                     <option key={d.id} value={d.nombre}>
-                      🏢 {d.nombre} ({d.rif})
+                      {d.nombre} ({d.rif})
                     </option>
                   ))}
                   <option value="Distribución Directa">Distribución Directa / Editorial Independiente</option>
@@ -906,7 +907,7 @@ export default function AjustesInventario({
 
                 <div className="form-field">
                   <label className="form-label" htmlFor="costoEntrada" style={{ color: '#0f766e' }}>
-                    3. Costo Unitario ($) 🔒:
+                    3. Costo Unitario ($):
                   </label>
                   <input
                     id="costoEntrada"
@@ -940,7 +941,7 @@ export default function AjustesInventario({
 
               {Number(formularioEntrada.cantidad) > 0 && Number(formularioEntrada.costoUnitario) > 0 && (
                 <div style={{ fontSize: '0.8rem', color: '#0f766e', background: '#f0fdfa', border: '1px solid #ccfbf1', padding: '0.5rem 0.75rem', borderRadius: '6px', marginBottom: '0.75rem' }}>
-                  💵 <strong>Costo Total estimado del Lote:</strong> ${(Number(formularioEntrada.cantidad) * Number(formularioEntrada.costoUnitario)).toFixed(2)} USD
+                  <strong>Costo Total estimado del Lote:</strong> ${(Number(formularioEntrada.cantidad) * Number(formularioEntrada.costoUnitario)).toFixed(2)} USD
                 </div>
               )}
 
@@ -965,7 +966,7 @@ export default function AjustesInventario({
                   Cancelar
                 </button>
                 <button type="submit" className="btn-primary" style={{ backgroundColor: '#16a34a' }}>
-                  ➕ Confirmar Ingreso de Stock
+                  + Confirmar Ingreso de Stock
                 </button>
               </div>
             </form>
@@ -979,7 +980,7 @@ export default function AjustesInventario({
       {libroBajaSeleccionado && (
         <div className="modal-overlay">
           <div className="modal-content modal-baja-content">
-            <h3>📉 Registrar Baja de Ejemplares</h3>
+            <h3>Registrar Baja de Ejemplares</h3>
             <p className="modal-subtitle">
               Esta acción descontará unidades de forma inmediata del inventario disponible.
             </p>
@@ -989,7 +990,7 @@ export default function AjustesInventario({
               {libroBajaSeleccionado.portada ? (
                 <img src={libroBajaSeleccionado.portada} alt={libroBajaSeleccionado.titulo} className="libro-baja-thumb" />
               ) : (
-                <div className="libro-baja-placeholder">📖</div>
+                <div className="libro-baja-placeholder"><Icono nombre="libro" size={16} /></div>
               )}
               <div>
                 <h4 className="libro-baja-titulo">{libroBajaSeleccionado.titulo}</h4>
@@ -1002,7 +1003,7 @@ export default function AjustesInventario({
 
             {errorModal && (
               <div className="alert-error-modal">
-                ⚠️ {errorModal}
+                <Icono nombre="alerta" size={15} style={{ marginRight: "5px" }} />{errorModal}
               </div>
             )}
 
@@ -1038,10 +1039,10 @@ export default function AjustesInventario({
                   onChange={(e) => setFormularioBaja({ ...formularioBaja, motivo: e.target.value })}
                   required
                 >
-                  <option value="Dañado / Deteriorado">📕 Dañado / Deteriorado (Hojas rotas, humedad, desgaste)</option>
-                  <option value="Pérdida / Extravío">🔍 Pérdida / Extravío</option>
+                  <option value="Dañado / Deteriorado">Dañado / Deteriorado (Hojas rotas, humedad, desgaste)</option>
+                  <option value="Pérdida / Extravío">Pérdida / Extravío</option>
                   <option value="Error de conteo / Inventario">🔢 Error de conteo / Auditoría física</option>
-                  <option value="Otro">📝 Otro motivo</option>
+                  <option value="Otro">Otro motivo</option>
                 </select>
               </div>
 

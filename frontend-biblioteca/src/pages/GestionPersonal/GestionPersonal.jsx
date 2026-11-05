@@ -11,6 +11,7 @@ import {
   apiDesbloquearUsuario
 } from '../../services/api';
 import { capitalizarPalabras } from '../../utils/formatoTexto';
+import Icono from '../../components/Icono/Icono';
 
 const formatearCedula = (str, prefijoForzado = null) => {
   if (!str) return '';
@@ -218,7 +219,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
 
       if (res.ok && res.usuario) {
         setPersonal(personal.map((u) => (u.id === res.usuario.id ? res.usuario : u)));
-        setMensajeExito(`🔑 Contraseña temporal asignada a "${res.usuario.nombre}". Se le solicitará cambiarla en su siguiente acceso.`);
+        setMensajeExito(`Contraseña temporal asignada a "${res.usuario.nombre}". Se le solicitará cambiarla en su siguiente acceso.`);
         handleCerrarModalReset();
 
         setTimeout(() => setMensajeExito(''), 5000);
@@ -273,7 +274,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
 
       if (res.ok && res.usuario) {
         setPersonal(personal.map((u) => (u.id === res.usuario.id ? res.usuario : u)));
-        setMensajeExito(`✏️ Datos de "${res.usuario.nombre}" actualizados exitosamente.`);
+        setMensajeExito(`Datos de "${res.usuario.nombre}" actualizados exitosamente.`);
         handleCerrarModalEditar();
         setTimeout(() => setMensajeExito(''), 4000);
       }
@@ -325,7 +326,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
           setPersonal(personal.map((u) => (u.id === res.usuario.id ? res.usuario : u)));
           setModalQRUsuario(res.usuario);
         }
-        setMensajeExito(`📱 Nuevo código QR 2FA generado para "${modalQRUsuario.nombre}".`);
+        setMensajeExito(`Nuevo código QR 2FA generado para "${modalQRUsuario.nombre}".`);
         setTimeout(() => setMensajeExito(''), 4500);
       }
     } catch (err) {
@@ -340,7 +341,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
       const res = await apiDesbloquearUsuario(usuario.id);
       if (res.ok && res.usuario) {
         setPersonal(personal.map((u) => (u.id === res.usuario.id ? res.usuario : u)));
-        setMensajeExito(res.mensaje || `🔓 Cuenta de "${usuario.nombre}" desbloqueada.`);
+        setMensajeExito(res.mensaje || `Cuenta de "${usuario.nombre}" desbloqueada.`);
         setTimeout(() => setMensajeExito(''), 4000);
       }
     } catch (err) {
@@ -366,7 +367,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
       {/* Encabezado */}
       <div className="page-header">
         <div>
-          <h2>🛠️ Gestión y Registro de Personal</h2>
+          <h2>Gestión y Registro de Personal</h2>
           <p>Administra las cuentas, restablece contraseñas y registra a los trabajadores que operan el sistema de biblioteca.</p>
         </div>
         <div className="tab-buttons">
@@ -374,13 +375,13 @@ export default function GestionPersonal({ onAbrirReporte }) {
             className={`btn-tab ${pestañaActiva === 'lista' ? 'active' : ''}`}
             onClick={() => setPestañaActiva('lista')}
           >
-            📋 Lista de Personal ({personal.length})
+            <Icono nombre="lista" size={15} style={{ marginRight: "6px" }} />Lista de Personal ({personal.length})
           </button>
           <button 
             className={`btn-tab ${pestañaActiva === 'crear' ? 'active' : ''}`}
             onClick={() => setPestañaActiva('crear')}
           >
-            ➕ Registrar Nuevo Trabajador
+            + Registrar Nuevo Trabajador
           </button>
           {onAbrirReporte && (
             <button
@@ -390,7 +391,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
               style={{ background: '#ede9fe', border: '1px solid #ddd6fe', color: '#6d28d9', fontWeight: 700 }}
               title="Generar reporte de productividad y ventas por personal"
             >
-              👤 Reporte Rendimiento (PDF)
+              <Icono nombre="usuario" size={15} style={{ marginRight: "5px" }} />Reporte Rendimiento (PDF)
             </button>
           )}
         </div>
@@ -408,7 +409,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
       {pestañaActiva === 'crear' && (
         <div className="create-user-card">
           <div className="create-user-header">
-            <h3>👤 Registrar Nuevo Trabajador del Sistema</h3>
+            <h3>Registrar Nuevo Trabajador del Sistema</h3>
             <p>Completa los datos para crear la cuenta. Por seguridad, el trabajador deberá definir su contraseña privada al iniciar sesión.</p>
           </div>
 
@@ -537,7 +538,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                   onChange={handleChange}
                   required
                 />
-                <span className="field-hint">🔐 El trabajador usará esta clave temporal para ingresar y el sistema le pedirá crear su clave personal definitiva.</span>
+                <span className="field-hint">El trabajador usará esta clave temporal para ingresar y el sistema le pedirá crear su clave personal definitiva.</span>
               </div>
             </div>
 
@@ -549,7 +550,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                 title="Limpiar campos del formulario"
                 disabled={guardando}
               >
-                🧹 Limpiar Campos
+                Limpiar Campos
               </button>
               <button
                 type="button"
@@ -560,7 +561,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                 Cancelar
               </button>
               <button type="submit" className="btn-primary" disabled={guardando}>
-                {guardando ? 'Guardando en Base de Datos...' : 'Guardar y Habilitar Acceso 💾'}
+                {guardando ? 'Guardando en Base de Datos...' : 'Guardar y Habilitar Acceso'}
               </button>
             </div>
           </form>
@@ -652,7 +653,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                         <td>{u.email}</td>
                         <td>
                           <span className={`badge ${u.rol === 'admin' ? 'badge-admin' : 'badge-staff'}`}>
-                            {u.rol === 'admin' ? '👑 Administrador' : '👤 Personal'}
+                            {u.rol === 'admin' ? 'Administrador' : 'Personal'}
                           </span>
                         </td>
                         <td>
@@ -664,7 +665,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.28rem', alignItems: 'flex-start' }}>
                             {u.debeCambiarPassword ? (
                               <span className="badge-pwd-pending" title="Debe cambiar contraseña al iniciar sesión">
-                                ⏳ Clave Temporal
+                                Clave Temporal
                               </span>
                             ) : (
                               <span className="badge-pwd-ok" title="Contraseña privada configurada">
@@ -684,7 +685,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                                 }}
                                 title="Segundo factor Google Authenticator vinculado"
                               >
-                                🛡️ 2FA Vinculado
+                                <Icono nombre="escudo" size={11} style={{ marginRight: "3px" }} />2FA Vinculado
                               </span>
                             ) : (
                               <span
@@ -699,7 +700,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                                 }}
                                 title="Se vinculará al escanear el código QR en su próximo inicio de sesión"
                               >
-                                📲 QR Pendiente
+                                <Icono nombre="qr" size={11} style={{ marginRight: "3px" }} />QR Pendiente
                               </span>
                             )}
                             {u.bloqueadoHasta && new Date(u.bloqueadoHasta) > new Date() && (
@@ -715,7 +716,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                                 }}
                                 title="Cuenta bloqueada temporalmente por intentos fallidos"
                               >
-                                🔒 Bloqueado (3 fallos)
+                                <Icono nombre="candado" size={11} style={{ marginRight: "3px" }} />Bloqueado (3 fallos)
                               </span>
                             )}
                           </div>
@@ -728,7 +729,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                               onClick={() => handleAbrirModalEditar(u)}
                               title="Editar datos del trabajador (Nombre, Correo, Rol)"
                             >
-                              ✏️ Editar
+                              <Icono nombre="editar" size={13} style={{ marginRight: "4px" }} />Editar
                             </button>
                             <button
                               type="button"
@@ -737,7 +738,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                               style={{ backgroundColor: '#eff6ff', color: '#1d4ed8', borderColor: '#bfdbfe' }}
                               title="Ver o regenerar código QR de Google Authenticator (2FA)"
                             >
-                              📱 QR 2FA
+                              <Icono nombre="qr" size={13} style={{ marginRight: "4px" }} />QR 2FA
                             </button>
                             <button
                               type="button"
@@ -745,7 +746,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                               onClick={() => handleAbrirModalReset(u)}
                               title="Restablecer o asignar nueva contraseña temporal"
                             >
-                              🔑 Clave
+                              <Icono nombre="llave" size={13} style={{ marginRight: "4px" }} />Clave
                             </button>
                             {u.bloqueadoHasta && new Date(u.bloqueadoHasta) > new Date() && (
                               <button
@@ -754,7 +755,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                                 onClick={() => handleDesbloquearCuenta(u)}
                                 title="Desbloquear cuenta inmediatamente"
                               >
-                                🔓 Desbloquear
+                                <Icono nombre="desbloquear" size={13} style={{ marginRight: "4px" }} />Desbloquear
                               </button>
                             )}
                             <button 
@@ -788,7 +789,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
         <div className="modal-overlay">
           <div className="modal-card">
             <div className="modal-header">
-              <h3>✏️ Editar Datos del Trabajador</h3>
+              <h3>Editar Datos del Trabajador</h3>
               <button type="button" className="btn-modal-close" onClick={handleCerrarModalEditar}>✕</button>
             </div>
 
@@ -798,7 +799,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
 
             {errorModalEdit && (
               <div className="modal-alert-error">
-                ⚠️ {errorModalEdit}
+                {errorModalEdit}
               </div>
             )}
 
@@ -817,7 +818,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                   readOnly
                   style={{ backgroundColor: '#f1f5f9', color: '#64748b', cursor: 'not-allowed' }}
                 />
-                <span className="field-hint">🔒 La cédula no puede modificarse una vez registrada en el sistema.</span>
+                <span className="field-hint">La cédula no puede modificarse una vez registrada en el sistema.</span>
               </div>
 
               {/* Nombre Completo */}
@@ -903,7 +904,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                   className="btn-primary"
                   disabled={guardandoEdicion}
                 >
-                  {guardandoEdicion ? 'Actualizando...' : 'Guardar Cambios 💾'}
+                  {guardandoEdicion ? 'Actualizando...' : 'Guardar Cambios'}
                 </button>
               </div>
             </form>
@@ -916,7 +917,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
         <div className="modal-overlay">
           <div className="modal-card">
             <div className="modal-header">
-              <h3>🔑 Restablecer Contraseña</h3>
+              <h3>Restablecer Contraseña</h3>
               <button type="button" className="btn-modal-close" onClick={handleCerrarModalReset}>✕</button>
             </div>
 
@@ -926,7 +927,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
 
             {errorReset && (
               <div className="modal-alert-error">
-                ⚠️ {errorReset}
+                {errorReset}
               </div>
             )}
 
@@ -956,11 +957,11 @@ export default function GestionPersonal({ onAbrirReporte }) {
                     title="Generar contraseña segura aleatoria"
                     style={{ whiteSpace: 'nowrap' }}
                   >
-                    🎲 Generar
+                    Generar
                   </button>
                 </div>
                 <span className="field-hint">
-                  ℹ️ Al iniciar sesión con esta clave, el sistema le pedirá obligatoriamente crear su contraseña personal.
+                  Al iniciar sesión con esta clave, el sistema le pedirá obligatoriamente crear su contraseña personal.
                 </span>
               </div>
 
@@ -978,7 +979,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                   className="btn-primary"
                   disabled={guardandoReset || !nuevaPasswordAdmin.trim()}
                 >
-                  {guardandoReset ? 'Guardando...' : 'Restablecer y Asignar 🔑'}
+                  {guardandoReset ? 'Guardando...' : 'Restablecer y Asignar'}
                 </button>
               </div>
             </form>
@@ -991,7 +992,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
         <div className="modal-overlay">
           <div className="modal-card" style={{ maxWidth: '460px' }}>
             <div className="modal-header">
-              <h3>📱 Código QR 2FA (Google Authenticator)</h3>
+              <h3>Código QR 2FA (Google Authenticator)</h3>
               <button
                 type="button"
                 className="btn-modal-close"
@@ -1033,8 +1034,8 @@ export default function GestionPersonal({ onAbrirReporte }) {
                   }}
                 >
                   {datosQR.totpHabilitado
-                    ? '🛡️ Dispositivo ya vinculado y activo'
-                    : '📲 Pendiente de primer escaneo al iniciar sesión'}
+                    ? 'Dispositivo ya vinculado y activo'
+                    : 'Pendiente de primer escaneo al iniciar sesión'}
                 </span>
 
                 {datosQR.qrSvg && (
@@ -1094,7 +1095,7 @@ export default function GestionPersonal({ onAbrirReporte }) {
                 style={{ color: '#b45309', borderColor: '#fcd34d', backgroundColor: '#fffbeb' }}
                 title="Invalidar el QR anterior y generar uno nuevo (útil si el trabajador cambió de teléfono)"
               >
-                {regenerandoQR ? 'Regenerando...' : '🔄 Regenerar Nuevo QR'}
+                {regenerandoQR ? 'Regenerando...' : 'Regenerar Nuevo QR'}
               </button>
               <button
                 type="button"

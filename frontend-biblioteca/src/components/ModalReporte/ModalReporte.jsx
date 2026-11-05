@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import './ModalReporte.css';
 import logo from '../../assets/Logo.png';
 import { apiGetSesionesBitacora } from '../../services/api';
+import Icono from '../Icono/Icono';
 
 /**
  * Motor Maestro de Generación de Reportes en PDF / Imprimibles
@@ -1418,10 +1419,10 @@ export default function ModalReporte({
             </div>
 
             <button type="button" className="btn-reporte-excel" onClick={handleExportarExcel}>
-              📊 Exportar a Excel
+              <Icono nombre="excel" size={15} /> <span>Exportar a Excel</span>
             </button>
             <button type="button" className="btn-reporte-print" onClick={handlePrint}>
-              🖨️ Imprimir / Guardar PDF
+              <Icono nombre="imprimir" size={15} /> <span>Imprimir / Guardar PDF</span>
             </button>
             <button type="button" className="btn-reporte-close" onClick={onClose}>
               Cerrar

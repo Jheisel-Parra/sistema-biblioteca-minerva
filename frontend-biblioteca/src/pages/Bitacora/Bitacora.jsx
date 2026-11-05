@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import './Bitacora.css';
+import Icono from '../../components/Icono/Icono';
 import { 
   apiGetBitacora, 
   apiGetSesionesBitacora, 
@@ -197,13 +198,13 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
   // Helper para icono de módulo
   const getModuloIcon = (modulo) => {
     switch (modulo) {
-      case 'VENTAS': return '🛒';
-      case 'INVENTARIO': return '📦';
-      case 'LIBROS': return '📚';
-      case 'GENEROS': return '🏷️';
-      case 'USUARIOS': return '👥';
-      case 'AUTH': return '🔐';
-      default: return '📋';
+      case 'VENTAS': return <Icono nombre="carrito" size={13} />;
+      case 'INVENTARIO': return <Icono nombre="caja" size={13} />;
+      case 'LIBROS': return <Icono nombre="libros" size={13} />;
+      case 'GENEROS': return <Icono nombre="etiqueta" size={13} />;
+      case 'USUARIOS': return <Icono nombre="usuarios" size={13} />;
+      case 'AUTH': return <Icono nombre="escudo" size={13} />;
+      default: return <Icono nombre="lista" size={13} />;
     }
   };
 
@@ -233,7 +234,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
       {/* Encabezado */}
       <div className="bitacora-header">
         <div className="bitacora-title-section">
-          <h1>🛡️ Bitácora, Seguridad y Respaldo</h1>
+          <h1>Bitácora, Seguridad y Respaldo</h1>
           <p>Supervisión de operaciones, control de sesiones activas y copias de seguridad de la base de datos SQLite</p>
         </div>
         <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -257,7 +258,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
               }}
               title="Generar reporte de auditoría de conexiones y horarios"
             >
-              ⏱️ Reporte Horarios (PDF)
+              <Icono nombre="reloj" size={15} style={{ marginRight: "5px" }} />Reporte Horarios (PDF)
             </button>
           )}
           <button 
@@ -266,7 +267,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
             onClick={cargarDatos}
             disabled={cargando}
           >
-            🔄 {cargando ? 'Actualizando...' : 'Actualizar'}
+            <Icono nombre="sincronizar" size={14} style={{ marginRight: "5px" }} />{cargando ? 'Actualizando...' : 'Actualizar'}
           </button>
         </div>
       </div>
@@ -274,7 +275,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
       {/* Alerta de Éxito de Backup */}
       {mensajeBackup && (
         <div style={{ background: '#ecfdf5', border: '1px solid #6ee7b7', color: '#065f46', padding: '0.9rem 1.2rem', borderRadius: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span>✅ {mensajeBackup}</span>
+          <span><Icono nombre="check" size={16} style={{ marginRight: "6px" }} />{mensajeBackup}</span>
           <button type="button" onClick={() => setMensajeBackup('')} style={{ background: 'transparent', border: 'none', color: '#065f46', cursor: 'pointer', fontWeight: 700 }}>✕</button>
         </div>
       )}
@@ -282,14 +283,14 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
       {/* Alerta de Error si ocurre */}
       {error && (
         <div style={{ background: '#fee2e2', border: '1px solid #f87171', color: '#991b1b', padding: '0.9rem 1.2rem', borderRadius: '10px' }}>
-          ⚠️ {error}
+          <Icono nombre="alerta" size={16} style={{ marginRight: "6px" }} />{error}
         </div>
       )}
 
       {/* Tarjetas de Métricas de Auditoría */}
       <div className="bitacora-stats-grid">
         <div className="bitacora-stat-card">
-          <div className="bitacora-stat-icon stat-icon-blue">⚡</div>
+          <div className="bitacora-stat-icon stat-icon-blue"><Icono nombre="actividad" size={22} /></div>
           <div className="bitacora-stat-info">
             <h3>{resumen.eventosHoy}</h3>
             <span>Acciones Registradas Hoy</span>
@@ -307,7 +308,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
         </div>
 
         <div className="bitacora-stat-card">
-          <div className="bitacora-stat-icon stat-icon-purple">📜</div>
+          <div className="bitacora-stat-icon stat-icon-blue"><Icono nombre="lista" size={22} /></div>
           <div className="bitacora-stat-info">
             <h3>{resumen.totalEventos}</h3>
             <span>Total Acciones en Bitácora</span>
@@ -315,7 +316,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
         </div>
 
         <div className="bitacora-stat-card">
-          <div className="bitacora-stat-icon stat-icon-amber">⏱️</div>
+          <div className="bitacora-stat-icon stat-icon-blue"><Icono nombre="reloj" size={22} /></div>
           <div className="bitacora-stat-info">
             <h3>{resumen.totalSesiones}</h3>
             <span>Sesiones Registradas</span>
@@ -330,7 +331,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
           className={`bitacora-tab-btn ${tabActiva === 'actividades' ? 'active' : ''}`}
           onClick={() => setTabActiva('actividades')}
         >
-          📜 Registro de Actividades
+          <Icono nombre="lista" size={15} style={{ marginRight: "6px" }} />Registro de Actividades
           <span className="tab-badge">{eventos.length}</span>
         </button>
 
@@ -339,7 +340,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
           className={`bitacora-tab-btn ${tabActiva === 'sesiones' ? 'active' : ''}`}
           onClick={() => setTabActiva('sesiones')}
         >
-          ⏱️ Conexiones y Horarios
+          <Icono nombre="reloj" size={15} style={{ marginRight: "6px" }} />Conexiones y Horarios
           <span className={`tab-badge ${resumen.sesionesActivas > 0 ? 'tab-badge-active' : ''}`}>
             {resumen.sesionesActivas} en línea
           </span>
@@ -351,7 +352,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
             className={`bitacora-tab-btn ${tabActiva === 'seguridad' ? 'active' : ''}`}
             onClick={() => setTabActiva('seguridad')}
           >
-            🛡️ Seguridad y Respaldo (Backup)
+            <Icono nombre="escudo" size={15} style={{ marginRight: "6px" }} />Seguridad y Respaldo (Backup)
             <span className="tab-badge">SQLite</span>
           </button>
         )}
@@ -376,13 +377,13 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                 value={filtroModulo}
                 onChange={(e) => setFiltroModulo(e.target.value)}
               >
-                <option value="TODOS">📁 Todos los Módulos</option>
-                <option value="VENTAS">🛒 Ventas</option>
-                <option value="INVENTARIO">📦 Inventario</option>
-                <option value="LIBROS">📚 Libros y Catálogo</option>
-                <option value="GENEROS">🏷️ Géneros</option>
-                <option value="USUARIOS">👥 Gestión Personal</option>
-                <option value="AUTH">🔐 Seguridad y Sesiones</option>
+                <option value="TODOS">Todos los Módulos</option>
+                <option value="VENTAS">Ventas</option>
+                <option value="INVENTARIO">Inventario</option>
+                <option value="LIBROS">Libros y Catálogo</option>
+                <option value="GENEROS">Géneros</option>
+                <option value="USUARIOS">Gestión Personal</option>
+                <option value="AUTH">Seguridad y Sesiones</option>
               </select>
 
               <input
@@ -444,7 +445,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                         <div className="user-cell">
                           <span className="user-cell-name">{ev.usuarioNombre}</span>
                           <span className="user-cell-role">
-                            {ev.usuarioRol === 'admin' ? '👑 Administrador' : '👤 Personal'}
+                            {ev.usuarioRol === 'admin' ? 'Administrador' : 'Personal'}
                           </span>
                         </div>
                       </td>
@@ -473,7 +474,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                             onClick={() => setEventoDetalle(ev)}
                             title="Ver datos detallados"
                           >
-                            🔍 Ver datos
+                            <Icono nombre="buscar" size={13} style={{ marginRight: "4px" }} />Ver datos
                           </button>
                         ) : (
                           <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>—</span>
@@ -515,7 +516,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
 
                     <div className="session-detail-line">
                       <span>Rol de Usuario:</span>
-                      <strong>{s.usuarioRol === 'admin' ? '👑 Admin' : '👤 Personal'}</strong>
+                      <strong>{s.usuarioRol === 'admin' ? 'Admin' : 'Personal'}</strong>
                     </div>
 
                     <div className="session-detail-line">
@@ -538,7 +539,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                       className="btn-force-logout"
                       onClick={() => handleForzarCierre(s)}
                     >
-                      🛑 Finalizar Sesión Administrativamente
+                      <Icono nombre="bloquear" size={14} style={{ marginRight: "5px" }} />Finalizar Sesión Administrativamente
                     </button>
                   </div>
                 ))}
@@ -558,8 +559,8 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                 onChange={(e) => setFiltroSesionEstado(e.target.value)}
               >
                 <option value="TODAS">Todas las Sesiones</option>
-                <option value="ACTIVAS">🟢 Solo Conectados (Activas)</option>
-                <option value="FINALIZADAS">⚪ Sesiones Desconectadas</option>
+                <option value="ACTIVAS">Solo Conectados (Activas)</option>
+                <option value="FINALIZADAS">Sesiones Desconectadas</option>
               </select>
             </div>
           </div>
@@ -601,7 +602,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
 
                       <td>
                         <span className={`sidebar-role-badge ${s.usuarioRol === 'admin' ? 'badge-admin' : 'badge-staff'}`}>
-                          {s.usuarioRol === 'admin' ? '👑 Admin' : '👤 Personal'}
+                          {s.usuarioRol === 'admin' ? 'Admin' : 'Personal'}
                         </span>
                       </td>
 
@@ -612,7 +613,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
 
                       <td>
                         {s.activo ? (
-                          <span style={{ color: '#16a34a', fontWeight: 600 }}>Sesión en Curso 🟢</span>
+                          <span style={{ color: '#16a34a', fontWeight: 600 }}>Sesión en Curso</span>
                         ) : (
                           <>
                             <strong>{s.fechaFin || s.fechaInicio}</strong>
@@ -647,7 +648,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                             style={{ margin: 0, padding: '0.25rem 0.6rem' }}
                             onClick={() => handleForzarCierre(s)}
                           >
-                            🛑 Desconectar
+                            Desconectar
                           </button>
                         ) : (
                           <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>—</span>
@@ -668,7 +669,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
           {/* Tarjeta Principal de Copia de Seguridad SQLite */}
           <div className="seguridad-card seguridad-card-featured">
             <div className="seguridad-card-header">
-              <div className="seguridad-icon-box">💾</div>
+              <div className="seguridad-icon-box" style={{ color: "#1e3a8a" }}><Icono nombre="guardar" size={24} /></div>
               <div>
                 <h2>Copia de Seguridad de la Base de Datos SQLite</h2>
                 <p>Descarga una copia íntegra y portable del archivo <code>dev.db</code> con todos los registros actuales del sistema.</p>
@@ -705,7 +706,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                 onClick={handleDescargarSqlite}
                 disabled={descargandoBackup || restaurandoBackup}
               >
-                💾 {descargandoBackup ? 'Generando Copia...' : 'Descargar Copia de Seguridad SQLite (.db)'}
+                <Icono nombre="guardar" size={16} style={{ marginRight: "6px" }} />{descargandoBackup ? 'Generando Copia...' : 'Descargar Copia de Seguridad SQLite (.db)'}
               </button>
 
               <button
@@ -714,7 +715,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                 onClick={handleDescargarJson}
                 disabled={descargandoBackup || restaurandoBackup}
               >
-                📄 Exportar Respaldo Completo (.json)
+                <Icono nombre="documento" size={16} style={{ marginRight: "6px" }} />Exportar Respaldo Completo (.json)
               </button>
 
               <input
@@ -736,19 +737,19 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
                 disabled={descargandoBackup || restaurandoBackup}
                 title="Seleccionar un archivo .db o .json de tu computadora para restaurar la base de datos"
               >
-                📂 {restaurandoBackup ? 'Restaurando Base de Datos...' : 'Cargar / Restaurar Base de Datos (.db / .json)'}
+                <Icono nombre="carpeta" size={16} style={{ marginRight: "6px" }} />{restaurandoBackup ? 'Restaurando Base de Datos...' : 'Cargar / Restaurar Base de Datos (.db / .json)'}
               </button>
             </div>
 
             <div className="seguridad-restore-tip">
-              <strong>¿Cómo restaurar un backup descargado?</strong> Haz clic en el botón verde <strong>"📂 Cargar / Restaurar Base de Datos"</strong>, selecciona tu archivo <code>.db</code> o <code>.json</code> desde tu carpeta y el sistema cargará todos tus datos automáticamente.
+              <strong>¿Cómo restaurar un backup descargado?</strong> Haz clic en el botón verde <strong>"Cargar / Restaurar Base de Datos"</strong>, selecciona tu archivo <code>.db</code> o <code>.json</code> desde tu carpeta y el sistema cargará todos tus datos automáticamente.
             </div>
           </div>
 
           {/* Tarjeta de Conteo de Registros Respaldados y Políticas de Seguridad */}
           <div className="seguridad-two-col">
             <div className="seguridad-card">
-              <h3>📊 Registros Almacenados en la Base de Datos</h3>
+              <h3>Registros Almacenados en la Base de Datos</h3>
               <p className="seguridad-sub">Resumen de las tablas protegidas dentro del archivo SQLite actual:</p>
               <div className="seguridad-counts-grid">
                 <div className="seguridad-count-pill">
@@ -787,7 +788,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
             </div>
 
             <div className="seguridad-card">
-              <h3>🔒 Políticas y Controles de Seguridad Activos</h3>
+              <h3>Políticas y Controles de Seguridad Activos</h3>
               <p className="seguridad-sub">Medidas de protección aplicadas en el sistema:</p>
               <ul className="seguridad-policies-list">
                 <li>
@@ -808,7 +809,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
 
           {/* Historial de Copias de Seguridad Generadas */}
           <div className="seguridad-card">
-            <h3>🕒 Historial de Copias de Seguridad Descargadas</h3>
+            <h3>Historial de Copias de Seguridad Descargadas</h3>
             <p className="seguridad-sub">Registro de respaldos emitidos por los administradores:</p>
             <div className="bitacora-table-wrapper" style={{ marginTop: '0.75rem' }}>
               <table className="bitacora-table">
@@ -860,7 +861,7 @@ export default function Bitacora({ esAdmin = true, onAbrirReporte }) {
         <div className="modal-detalles-overlay" onClick={() => setEventoDetalle(null)}>
           <div className="modal-detalles-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-detalles-header">
-              <h3>🔍 Datos Registrados del Evento #{eventoDetalle.id}</h3>
+              <h3>Datos Registrados del Evento #{eventoDetalle.id}</h3>
               <button 
                 type="button" 
                 className="btn-modal-close"

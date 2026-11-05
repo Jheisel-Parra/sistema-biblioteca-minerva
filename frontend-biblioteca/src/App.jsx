@@ -3,6 +3,7 @@ import './App.css';
 
 // Componentes
 import Sidebar from './components/Sidebar/Sidebar';
+import Icono from './components/Icono/Icono';
 
 // Páginas / Vistas
 import Login from './pages/Login/Login';
@@ -42,10 +43,10 @@ import {
 } from './services/api';
 
 const METODOS_PAGO_INICIALES = [
-  { id: 1, nombre: 'Punto de Venta', etiqueta: 'Punto de Venta', icono: '💳', requiereReferencia: true, esBase: true, activo: true },
-  { id: 2, nombre: 'Pago Móvil', etiqueta: 'Pago Móvil', icono: '📱', requiereReferencia: true, esBase: true, activo: true },
-  { id: 3, nombre: 'Transferencia Bancaria', etiqueta: 'Transferencia', icono: '🏦', requiereReferencia: true, esBase: true, activo: true },
-  { id: 4, nombre: 'Efectivo', etiqueta: 'Efectivo ($ / Bs)', icono: '💵', requiereReferencia: false, esBase: true, activo: true }
+  { id: 1, nombre: 'Punto de Venta', etiqueta: 'Punto de Venta', icono: 'tarjeta', requiereReferencia: true, esBase: true, activo: true },
+  { id: 2, nombre: 'Pago Móvil', etiqueta: 'Pago Móvil', icono: 'movil', requiereReferencia: true, esBase: true, activo: true },
+  { id: 3, nombre: 'Transferencia Bancaria', etiqueta: 'Transferencia', icono: 'banco', requiereReferencia: true, esBase: true, activo: true },
+  { id: 4, nombre: 'Efectivo', etiqueta: 'Efectivo ($ / Bs)', icono: 'dolar', requiereReferencia: false, esBase: true, activo: true }
 ];
 
 function App() {
@@ -131,7 +132,7 @@ function App() {
       const res = await apiCrearMetodoPago({
         nombre: nombreLimpio,
         etiqueta: (nuevoMetodo.etiqueta || nombreLimpio).trim(),
-        icono: nuevoMetodo.icono || '💸',
+        icono: nuevoMetodo.icono || 'dolar',
         requiereReferencia: nuevoMetodo.requiereReferencia !== undefined ? Boolean(nuevoMetodo.requiereReferencia) : true
       });
       if (res?.ok && res.metodoPago) {
@@ -152,7 +153,7 @@ function App() {
       id: Date.now(),
       nombre: nombreLimpio,
       etiqueta: (nuevoMetodo.etiqueta || nombreLimpio).trim(),
-      icono: nuevoMetodo.icono || '💸',
+      icono: nuevoMetodo.icono || 'dolar',
       requiereReferencia: nuevoMetodo.requiereReferencia !== undefined ? Boolean(nuevoMetodo.requiereReferencia) : true,
       esBase: false,
       activo: true,
@@ -497,7 +498,7 @@ function App() {
         if (!esAdmin) {
           return (
             <div className="card-alerta-restringido">
-              <h2>🔒 Acceso Restringido</h2>
+              <h2><Icono nombre="candado" size={22} style={{ marginRight: '8px' }} />Acceso Restringido</h2>
               <p>El módulo de Control de Inventario solo está disponible para usuarios con rol de Administrador.</p>
             </div>
           );
@@ -518,7 +519,7 @@ function App() {
         if (!esAdmin) {
           return (
             <div className="card-alerta-restringido">
-              <h2>🔒 Acceso Restringido</h2>
+              <h2><Icono nombre="candado" size={22} style={{ marginRight: '8px' }} />Acceso Restringido</h2>
               <p>El módulo de Distribuidores y Proveedores solo está disponible para Administradores.</p>
             </div>
           );
@@ -536,7 +537,7 @@ function App() {
         if (!esAdmin) {
           return (
             <div className="card-alerta-restringido">
-              <h2>🔒 Acceso Restringido</h2>
+              <h2><Icono nombre="candado" size={22} style={{ marginRight: '8px' }} />Acceso Restringido</h2>
               <p>La Gestión de Personal y Trabajadores es un módulo exclusivo de Administradores.</p>
             </div>
           );
@@ -550,7 +551,7 @@ function App() {
         if (!esAdmin) {
           return (
             <div className="card-alerta-restringido">
-              <h2>🔒 Acceso Restringido</h2>
+              <h2><Icono nombre="candado" size={22} style={{ marginRight: '8px' }} />Acceso Restringido</h2>
               <p>La Bitácora del Sistema y Control de Conexiones es un módulo exclusivo de Administradores.</p>
             </div>
           );
@@ -565,7 +566,7 @@ function App() {
         if (!esAdmin) {
           return (
             <div className="card-alerta-restringido">
-              <h2>🔒 Acceso Restringido</h2>
+              <h2><Icono nombre="candado" size={22} style={{ marginRight: '8px' }} />Acceso Restringido</h2>
               <p>El Centro de Reportes y Documentos Oficiales es un módulo exclusivo de Administradores.</p>
             </div>
           );
@@ -615,7 +616,9 @@ function App() {
         {/* Barra informativa de usuario y rol conectado */}
         <div className="user-session-bar">
           <div className="user-session-info">
-            <span className="user-avatar-badge">{esAdmin ? '👑' : '👤'}</span>
+            <span className="user-avatar-badge">
+              <Icono nombre={esAdmin ? 'escudo' : 'usuario'} size={18} />
+            </span>
             <div>
               <strong>{usuarioAutenticado.nombre}</strong> ({usuarioAutenticado.email}) &bull;{' '}
               <span className={`user-role-pill ${esAdmin ? 'role-admin' : 'role-staff'}`}>

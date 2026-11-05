@@ -6,6 +6,7 @@ import {
   apiToggleEstadoDistribuidor
 } from '../../services/api';
 import { capitalizarPalabras } from '../../utils/formatoTexto';
+import Icono from '../../components/Icono/Icono';
 
 export default function Distribuidores({ 
   distribuidores: propDistribuidores, 
@@ -82,7 +83,7 @@ export default function Distribuidores({
     return (
       <div className="page-container">
         <div className="alert-warning-distribuidor">
-          <h3>🔒 Acceso Restringido</h3>
+          <h3><Icono nombre="candado" size={18} style={{ marginRight: "6px" }} />Acceso Restringido</h3>
           <p>El módulo de Distribuidores y Proveedores es de acceso exclusivo para Administradores.</p>
         </div>
       </div>
@@ -254,7 +255,7 @@ export default function Distribuidores({
       {/* Encabezado */}
       <div className="page-header">
         <div>
-          <h2>🏢 Empresas Distribuidoras y Proveedores</h2>
+          <h2>Empresas Distribuidoras y Proveedores</h2>
           <p>Gestión de casas editoriales y empresas distribuidoras asociadas al inventario de libros.</p>
         </div>
         <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -277,7 +278,7 @@ export default function Distribuidores({
               }}
               title="Generar balance oficial de compras e inversión por distribuidor"
             >
-              🏢 Reporte Compras (PDF)
+              <Icono nombre="edificio" size={15} style={{ marginRight: "6px" }} />Reporte Compras (PDF)
             </button>
           )}
           <button className="btn-primary" onClick={() => setMostrarModalNuevo(true)}>
@@ -289,7 +290,7 @@ export default function Distribuidores({
       {/* DASHBOARD / KPIs DE DISTRIBUIDORES */}
       <div className="metrics-grid">
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#eff6ff', color: '#2563eb' }}>🏢</div>
+          <div className="metric-icon"><Icono nombre="edificio" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Empresas Registradas</span>
             <span className="metric-value">{totalDistribuidores}</span>
@@ -297,7 +298,7 @@ export default function Distribuidores({
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#f0fdf4', color: '#16a34a' }}>✅</div>
+          <div className="metric-icon"><Icono nombre="check" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Distribuidores Activos</span>
             <span className="metric-value" style={{ color: '#16a34a' }}>{distribuidoresActivos}</span>
@@ -305,7 +306,7 @@ export default function Distribuidores({
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#fdf4ff', color: '#a855f7' }}>📚</div>
+          <div className="metric-icon"><Icono nombre="libros" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Títulos Suministrados</span>
             <span className="metric-value">{totalTitulosSuministrados}</span>
@@ -313,7 +314,7 @@ export default function Distribuidores({
         </div>
 
         <div className="metric-card">
-          <div className="metric-icon" style={{ backgroundColor: '#fffbeb', color: '#d97706' }}>📦</div>
+          <div className="metric-icon"><Icono nombre="caja" size={22} /></div>
           <div className="metric-data">
             <span className="metric-title">Ejemplares en Stock</span>
             <span className="metric-value" style={{ color: '#0f766e' }}>{totalEjemplaresSuministrados} uds.</span>
@@ -383,7 +384,7 @@ export default function Distribuidores({
                       <div className="text-bold">{d.nombre}</div>
                       {d.direccion && (
                         <span className="text-muted" style={{ fontSize: '0.75rem', display: 'block' }}>
-                          📍 {d.direccion}
+                          <Icono nombre="ubicacion" size={12} style={{ marginRight: "4px" }} />{d.direccion}
                         </span>
                       )}
                     </td>
@@ -391,11 +392,11 @@ export default function Distribuidores({
                     <td>{d.contacto}</td>
                     <td>
                       <div style={{ fontSize: '0.85rem' }}>{d.correo}</div>
-                      <div className="text-muted" style={{ fontSize: '0.75rem' }}>📞 {d.telefono}</div>
+                      <div className="text-muted" style={{ fontSize: '0.75rem' }}><Icono nombre="telefono" size={12} style={{ marginRight: "4px" }} />{d.telefono}</div>
                     </td>
                     <td style={{ textAlign: 'center' }}>
                       <span className="badge-libros-distribuidor">
-                        📚 {librosSuministrados.length} títulos ({totalEjemplares} uds.)
+                        <Icono nombre="libros" size={13} style={{ marginRight: "4px" }} />{librosSuministrados.length} títulos ({totalEjemplares} uds.)
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
@@ -411,7 +412,7 @@ export default function Distribuidores({
                           onClick={() => setDistribuidorAEditar({ ...d })}
                           title="Editar datos del distribuidor"
                         >
-                          ✏️ Editar
+                          <Icono nombre="editar" size={13} style={{ marginRight: "4px" }} />Editar
                         </button>
                         <button
                           type="button"
@@ -419,7 +420,7 @@ export default function Distribuidores({
                           onClick={() => setDistribuidorVerCatalogo(d)}
                           title="Ver libros suministrados por esta empresa"
                         >
-                          👁️ Libros ({librosSuministrados.length})
+                          <Icono nombre="libros" size={13} style={{ marginRight: "4px" }} />Libros ({librosSuministrados.length})
                         </button>
                         <button
                           type="button"
@@ -449,7 +450,7 @@ export default function Distribuidores({
       {mostrarModalNuevo && (
         <div className="modal-overlay">
           <div className="modal-content" style={{ maxWidth: '540px' }}>
-            <h3>🏢 Registrar Empresa Distribuidora</h3>
+            <h3>Registrar Empresa Distribuidora</h3>
 
             {errorModalNuevo && (
               <div style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', padding: '0.65rem 0.85rem', borderRadius: '6px', fontSize: '0.85rem', marginBottom: '0.75rem' }}>
@@ -543,7 +544,7 @@ export default function Distribuidores({
                   onClick={handleLimpiarNuevo}
                   title="Limpiar campos"
                 >
-                  🧹 Limpiar Campos
+                  Limpiar Campos
                 </button>
                 <button
                   type="button"
@@ -565,7 +566,7 @@ export default function Distribuidores({
       {distribuidorAEditar && (
         <div className="modal-overlay">
           <div className="modal-content" style={{ maxWidth: '540px' }}>
-            <h3>✏️ Editar Distribuidor</h3>
+            <h3>Editar Distribuidor</h3>
             <form onSubmit={handleGuardarEdicion} className="form-group">
               <div>
                 <label className="form-label">Nombre de la Empresa / Editorial *</label>
@@ -581,7 +582,7 @@ export default function Distribuidores({
               </div>
 
               <div>
-                <label className="form-label">RIF / Identificación Fiscal (No editable) 🔒</label>
+                <label className="form-label">RIF / Identificación Fiscal (No editable)</label>
                 <input
                   type="text"
                   name="rif"
@@ -591,7 +592,7 @@ export default function Distribuidores({
                   className="form-input form-input-readonly"
                   title="El RIF es el identificador fiscal único y no se puede modificar"
                 />
-                <span className="field-hint">🔒 El RIF es la identificación fiscal única de la empresa distribuidora.</span>
+                <span className="field-hint">El RIF es la identificación fiscal única de la empresa distribuidora.</span>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
@@ -662,7 +663,7 @@ export default function Distribuidores({
                   }
                   title="Limpiar campos editables"
                 >
-                  🧹 Limpiar Campos
+                  Limpiar Campos
                 </button>
                 <button
                   type="button"
@@ -684,7 +685,7 @@ export default function Distribuidores({
       {distribuidorVerCatalogo && (
         <div className="modal-overlay">
           <div className="modal-content modal-distribuidor-catalogo">
-            <h3>🏢 Ficha de Distribuidor: {distribuidorVerCatalogo.nombre}</h3>
+            <h3>Ficha de Distribuidor: {distribuidorVerCatalogo.nombre}</h3>
             
             <div className="distribuidor-info-box">
               <div className="distribuidor-info-row">
@@ -712,7 +713,7 @@ export default function Distribuidores({
             </div>
 
             <h4 className="distribuidor-libros-title">
-              📚 Títulos Suministrados en el Inventario
+              Títulos Suministrados en el Inventario
             </h4>
 
             {(() => {
@@ -725,7 +726,7 @@ export default function Distribuidores({
                         {libro.portada ? (
                           <img src={libro.portada} alt={libro.titulo} className="libro-suministrado-thumb" />
                         ) : (
-                          <div className="libro-suministrado-placeholder">📖</div>
+                          <div className="libro-suministrado-placeholder"><Icono nombre="libro" size={18} /></div>
                         )}
                         <div className="libro-suministrado-data">
                           <div className="libro-suministrado-title">{libro.titulo}</div>

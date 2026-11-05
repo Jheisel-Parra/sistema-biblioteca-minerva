@@ -1,4 +1,5 @@
 import './Metricas.css';
+import Icono from '../../components/Icono/Icono';
 
 export default function Metricas({ ventas = [], libros = [], usuarios = [], esAdmin = false, onAbrirReporte }) {
   const totalIngresos = ventas.reduce((acc, v) => acc + (Number(v.total) || 0), 0);
@@ -26,11 +27,11 @@ export default function Metricas({ ventas = [], libros = [], usuarios = [], esAd
   }
 
   const metricas = [
-    { titulo: 'Total Recaudado Ventas', valor: `$${totalIngresos.toFixed(2)}`, icono: '💵' },
-    ...(esAdmin ? [{ titulo: 'Ganancia Neta Estimada', valor: `$${totalGananciaEstimada.toFixed(2)}`, icono: '📈' }] : []),
-    { titulo: 'Ventas Realizadas', valor: `${ventas.length}`, icono: '🧾' },
-    { titulo: 'Total Ejemplares en Stock', valor: `${totalEjemplares}`, icono: '📚' },
-    { titulo: 'Lectores Registrados', valor: `${totalLectores}`, icono: '👥' },
+    { titulo: 'Total Recaudado Ventas', valor: `$${totalIngresos.toFixed(2)}`, icono: 'dolar' },
+    ...(esAdmin ? [{ titulo: 'Ganancia Neta Estimada', valor: `$${totalGananciaEstimada.toFixed(2)}`, icono: 'tendencia-up' }] : []),
+    { titulo: 'Ventas Realizadas', valor: `${ventas.length}`, icono: 'recibo' },
+    { titulo: 'Total Ejemplares en Stock', valor: `${totalEjemplares}`, icono: 'libros' },
+    { titulo: 'Lectores Registrados', valor: `${totalLectores}`, icono: 'usuarios' },
   ];
 
   // Últimas ventas para seguimiento
@@ -41,7 +42,7 @@ export default function Metricas({ ventas = [], libros = [], usuarios = [], esAd
       {/* Encabezado */}
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h2>📊 Resumen General y Métricas</h2>
+          <h2>Resumen General y Métricas</h2>
           <p>Bienvenido al panel principal de gestión de inventario, ventas y lectores de la biblioteca.</p>
         </div>
         {esAdmin && onAbrirReporte && (
@@ -60,12 +61,13 @@ export default function Metricas({ ventas = [], libros = [], usuarios = [], esAd
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.4rem',
+                gap: '0.45rem',
                 boxShadow: '0 2px 8px rgba(30, 58, 138, 0.25)'
               }}
               title="Generar estado de rentabilidad y utilidades en PDF"
             >
-              📈 Reporte Rentabilidad (PDF)
+              <Icono nombre="tendencia-up" size={16} />
+              <span>Reporte Rentabilidad (PDF)</span>
             </button>
             <button
               type="button"
@@ -81,19 +83,20 @@ export default function Metricas({ ventas = [], libros = [], usuarios = [], esAd
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.4rem'
+                gap: '0.45rem'
               }}
               title="Generar ranking de libros más vendidos en PDF"
             >
-              🏆 Ranking Libros (PDF)
+              <Icono nombre="premio" size={16} />
+              <span>Ranking Libros (PDF)</span>
             </button>
             <button
               type="button"
               onClick={() => onAbrirReporte('predicciones-compras')}
               style={{
-                background: '#fffbeb',
-                color: '#b45309',
-                border: '1px solid #fde68a',
+                background: '#f8fafc',
+                color: '#1e3a8a',
+                border: '1px solid #cbd5e1',
                 padding: '0.6rem 1rem',
                 borderRadius: '8px',
                 fontWeight: 700,
@@ -101,11 +104,12 @@ export default function Metricas({ ventas = [], libros = [], usuarios = [], esAd
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.4rem'
+                gap: '0.45rem'
               }}
               title="Generar predicción de demanda y recomendación de compra a distribuidores en PDF"
             >
-              🔮 Predicción de Compras (PDF)
+              <Icono nombre="analitica" size={16} />
+              <span>Predicción de Compras (PDF)</span>
             </button>
           </div>
         )}
@@ -115,7 +119,9 @@ export default function Metricas({ ventas = [], libros = [], usuarios = [], esAd
       <div className="metrics-grid">
         {metricas.map((m, index) => (
           <div key={index} className="metric-card">
-            <div className="metric-icon">{m.icono}</div>
+            <div className="metric-icon">
+              <Icono nombre={m.icono} size={22} />
+            </div>
             <div className="metric-data">
               <span className="metric-title">{m.titulo}</span>
               <span className="metric-value">{m.valor}</span>
@@ -126,7 +132,10 @@ export default function Metricas({ ventas = [], libros = [], usuarios = [], esAd
 
       {/* Tabla de Últimas Ventas */}
       <div className="section-card">
-        <h3 className="section-title">⚡ Últimas Ventas Registradas</h3>
+        <h3 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <Icono nombre="actividad" size={18} style={{ color: '#1e3a8a' }} />
+          <span>Últimas Ventas Registradas</span>
+        </h3>
         <div className="table-container">
           <table className="data-table">
             <thead>

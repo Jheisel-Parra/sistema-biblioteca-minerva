@@ -1,5 +1,6 @@
 import './Sidebar.css';
 import logo from '../../assets/Logo.png'; 
+import Icono from '../Icono/Icono';
 
 export default function Sidebar({ 
   paginaActual, 
@@ -48,7 +49,8 @@ export default function Sidebar({
               {usuario?.nombre || (esAdmin ? 'Panel Admin' : 'Panel Recepción')}
             </h2>
             <span className={`sidebar-role-badge ${esAdmin ? 'badge-admin' : 'badge-staff'}`}>
-              {esAdmin ? '👑 Administrador' : '👤 Personal'}
+              <Icono nombre={esAdmin ? 'escudo' : 'usuario'} size={11} style={{ marginRight: '4px' }} />
+              {esAdmin ? 'Administrador' : 'Personal'}
             </span>
           </div>
 
@@ -72,35 +74,40 @@ export default function Sidebar({
             className={`sidebar-btn ${paginaActual === 'metricas' ? 'active' : ''}`}
             onClick={() => handleNavegar('metricas')}
           >
-            📊 Métricas
+            <Icono nombre="metricas" size={18} />
+            <span>Métricas</span>
           </button>
 
           <button 
             className={`sidebar-btn ${paginaActual === 'nueva-venta' ? 'active' : ''}`}
             onClick={() => handleNavegar('nueva-venta')}
           >
-            🛒 Venta
+            <Icono nombre="carrito" size={18} />
+            <span>Venta</span>
           </button>
 
           <button 
             className={`sidebar-btn ${paginaActual === 'historial-ventas' ? 'active' : ''}`}
             onClick={() => handleNavegar('historial-ventas')}
           >
-            🧾 Historial de Ventas
+            <Icono nombre="recibo" size={18} />
+            <span>Historial de Ventas</span>
           </button>
 
           <button 
             className={`sidebar-btn ${paginaActual === 'libros' ? 'active' : ''}`}
             onClick={() => handleNavegar('libros')}
           >
-            📚 Libros y Catálogo
+            <Icono nombre="libros" size={18} />
+            <span>Libros y Catálogo</span>
           </button>
 
           <button 
             className={`sidebar-btn ${paginaActual === 'usuarios' ? 'active' : ''}`}
             onClick={() => handleNavegar('usuarios')}
           >
-            👥 Lectores
+            <Icono nombre="usuarios" size={18} />
+            <span>Lectores</span>
           </button>
 
           {/* --- VISTAS EXCLUSIVAS DE ADMINISTRACIÓN --- */}
@@ -112,35 +119,40 @@ export default function Sidebar({
                 className={`sidebar-btn ${paginaActual === 'centro-reportes' ? 'active' : ''}`}
                 onClick={() => handleNavegar('centro-reportes')}
               >
-                📑 Centro de Reportes
+                <Icono nombre="reportes" size={18} />
+                <span>Centro de Reportes</span>
               </button>
 
               <button 
                 className={`sidebar-btn ${paginaActual === 'ajustes-inventario' ? 'active' : ''}`}
                 onClick={() => handleNavegar('ajustes-inventario')}
               >
-                📦 Control de Inventario
+                <Icono nombre="caja" size={18} />
+                <span>Control de Inventario</span>
               </button>
 
               <button 
                 className={`sidebar-btn ${paginaActual === 'distribuidores' ? 'active' : ''}`}
                 onClick={() => handleNavegar('distribuidores')}
               >
-                🏢 Distribuidores
+                <Icono nombre="edificio" size={18} />
+                <span>Distribuidores</span>
               </button>
 
               <button 
                 className={`sidebar-btn ${paginaActual === 'gestion-personal' ? 'active' : ''}`}
                 onClick={() => handleNavegar('gestion-personal')}
               >
-                🛠️ Gestión de Personal
+                <Icono nombre="config" size={18} />
+                <span>Gestión de Personal</span>
               </button>
 
               <button 
                 className={`sidebar-btn ${paginaActual === 'bitacora' ? 'active' : ''}`}
                 onClick={() => handleNavegar('bitacora')}
               >
-                🛡️ Bitácora y Seguridad
+                <Icono nombre="escudo" size={18} />
+                <span>Bitácora y Seguridad</span>
               </button>
             </>
           )}
@@ -165,20 +177,25 @@ export default function Sidebar({
               alignItems: 'center',
               justifyContent: 'flex-start',
               marginBottom: '8px',
-              background: 'rgba(212, 175, 55, 0.14)',
-              border: '1px solid rgba(212, 175, 55, 0.35)',
-              color: '#fef3c7'
+              background: 'rgba(37, 99, 235, 0.14)',
+              border: '1px solid rgba(59, 130, 246, 0.35)',
+              color: '#dbeafe'
             }}
           >
-            🌐 Ver Landing Pública
+            <Icono nombre="globo" size={17} />
+            <span>Ver Landing Pública</span>
           </a>
           {usuario?.email && (
             <div className="sidebar-user-info" title={usuario.email}>
-              <small className="sidebar-user-email">📧 {usuario.email}</small>
+              <small className="sidebar-user-email">
+                <Icono nombre="correo" size={13} style={{ marginRight: '5px', opacity: 0.8 }} />
+                {usuario.email}
+              </small>
             </div>
           )}
           <button className="sidebar-btn btn-logout" onClick={handleCerrarSesion}>
-            🚪 Cerrar Sesión
+            <Icono nombre="salir" size={17} />
+            <span>Cerrar Sesión</span>
           </button>
         </div>
       </aside>

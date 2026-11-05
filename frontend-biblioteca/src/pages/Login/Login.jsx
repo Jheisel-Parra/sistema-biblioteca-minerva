@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './Login.css';
 import logo from '../../assets/Logo.png';
+import Icono from '../../components/Icono/Icono';
 import { apiLogin, apiVerificar2FA, guardarSesion } from '../../services/api';
 
 export default function Login({ onLoginExitoso }) {
@@ -125,7 +126,9 @@ export default function Login({ onLoginExitoso }) {
         {/* Alerta de Error o Bloqueo */}
         {error && (
           <div className="login-alert-error" role="alert">
-            <span className="login-alert-icon">⚠️</span>
+            <span className="login-alert-icon">
+              <Icono nombre="alerta" size={18} />
+            </span>
             <span>{error}</span>
           </div>
         )}
@@ -175,7 +178,7 @@ export default function Login({ onLoginExitoso }) {
                   onClick={() => setMostrarPassword(!mostrarPassword)}
                   aria-label={mostrarPassword ? 'Ocultar contraseña' : 'Ver contraseña'}
                 >
-                  {mostrarPassword ? '👁️' : '🔒'}
+                  <Icono nombre={mostrarPassword ? 'ojo-off' : 'ojo'} size={18} />
                 </button>
               </div>
             </div>
@@ -190,7 +193,7 @@ export default function Login({ onLoginExitoso }) {
                   <span className="login-spinner"></span> Verificando credenciales...
                 </span>
               ) : (
-                'Continuar a Verificación 2FA ➔'
+                'Continuar a Verificación 2FA'
               )}
             </button>
           </form>
@@ -199,7 +202,9 @@ export default function Login({ onLoginExitoso }) {
           <form onSubmit={handleSubmit2FA} className="login-form">
             {usuarioResumen && (
               <div className="login-user-verified-banner">
-                <span className="verified-icon">🛡️</span>
+                <span className="verified-icon" style={{ color: '#1e3a8a', display: 'inline-flex' }}>
+                  <Icono nombre="escudo" size={20} />
+                </span>
                 <div>
                   <strong>{usuarioResumen.nombre}</strong>
                   <span className="verified-sub">{usuarioResumen.email}</span>
@@ -209,7 +214,10 @@ export default function Login({ onLoginExitoso }) {
 
             {configurando2FA && qrSvg ? (
               <div className="login-qr-setup-box">
-                <div className="qr-setup-badge">📲 Vinculación Inicial de Seguridad (Única Vez)</div>
+                <div className="qr-setup-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <Icono nombre="qr" size={14} />
+                  <span>Vinculación Inicial de Seguridad (Única Vez)</span>
+                </div>
                 <p className="qr-setup-instructions">
                   Abre la app <strong>Google Authenticator</strong> (o Authy) en tu teléfono, toca <strong>"+"</strong> y escanea este código QR:
                 </p>
@@ -279,9 +287,9 @@ export default function Login({ onLoginExitoso }) {
                   <span className="login-spinner"></span> Validando código...
                 </span>
               ) : configurando2FA ? (
-                'Activar 2FA e Iniciar Sesión ➔'
+                'Activar 2FA e Iniciar Sesión'
               ) : (
-                'Verificar Código e Ingresar ➔'
+                'Verificar Código e Ingresar'
               )}
             </button>
 

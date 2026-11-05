@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './CambioPasswordObligatorio.css';
 import logo from '../../assets/Logo.png';
+import Icono from '../../components/Icono/Icono';
 import { apiCambiarPasswordInicial, guardarSesion, getToken } from '../../services/api';
 
 export default function CambioPasswordObligatorio({ usuario, onPasswordActualizada, onCerrarSesion }) {
@@ -54,7 +55,10 @@ export default function CambioPasswordObligatorio({ usuario, onPasswordActualiza
         {/* Cabecera */}
         <div className="pwd-change-header">
           <img src={logo} alt="Logo Biblioteca" className="pwd-change-logo" />
-          <div className="pwd-badge-security">🛡️ Seguridad de la Cuenta</div>
+          <div className="pwd-badge-security" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <Icono nombre="escudo" size={14} />
+            <span>Seguridad de la Cuenta</span>
+          </div>
           <h1 className="pwd-change-title">Establece tu Contraseña Personal</h1>
           <p className="pwd-change-subtitle">
             Hola, <strong>{usuario?.nombre || 'Usuario'}</strong>. Por motivos de seguridad y al ser tu primer inicio de sesión (o tras un restablecimiento administrativo), debes definir una contraseña privada y personal para acceder a tu panel de trabajo.
@@ -63,8 +67,9 @@ export default function CambioPasswordObligatorio({ usuario, onPasswordActualiza
 
         {/* Alerta de Error */}
         {error && (
-          <div className="pwd-alert-error" role="alert">
-            <span>⚠️ {error}</span>
+          <div className="pwd-alert-error" role="alert" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Icono nombre="alerta" size={18} />
+            <span>{error}</span>
           </div>
         )}
 
@@ -94,7 +99,7 @@ export default function CambioPasswordObligatorio({ usuario, onPasswordActualiza
                 onClick={() => setMostrarPassword(!mostrarPassword)}
                 aria-label="Ver u ocultar contraseña"
               >
-                {mostrarPassword ? '👁️' : '🔒'}
+                <Icono nombre={mostrarPassword ? 'ojo-off' : 'ojo'} size={18} />
               </button>
             </div>
           </div>
@@ -131,15 +136,16 @@ export default function CambioPasswordObligatorio({ usuario, onPasswordActualiza
           <button
             type="submit"
             className="btn-pwd-submit"
-            disabled={cargando || nuevaPassword.length < 6 || nuevaPassword !== confirmarPassword}
+            disabled={cargando || nuevaPassword.length >= 6 === false || nuevaPassword !== confirmarPassword}
           >
-            {cargando ? 'Guardando en Base de Datos...' : 'Guardar Mi Contraseña y Entrar ➔'}
+            {cargando ? 'Guardando en Base de Datos...' : 'Guardar Mi Contraseña y Entrar'}
           </button>
         </form>
 
         <div className="pwd-change-footer">
-          <button type="button" className="btn-pwd-logout" onClick={onCerrarSesion}>
-            Cerrar Sesión 🚪
+          <button type="button" className="btn-pwd-logout" onClick={onCerrarSesion} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <Icono nombre="salir" size={15} />
+            <span>Cerrar Sesión</span>
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import './NuevaVenta.css';
 import ModalFactura from '../../components/ModalFactura/ModalFactura';
 import { apiConsultarTasaBCV } from '../../services/api';
 import { capitalizarPalabras } from '../../utils/formatoTexto';
+import Icono from '../../components/Icono/Icono';
 
 function crearObjetoVenta({ clienteData, carrito, metodoPago, referenciaPago, subtotalBase, montoIva, totalPagar, totalArticulos, rolUsuario, tasaCambio }) {
   const timestamp = Date.now();
@@ -40,13 +41,13 @@ function crearObjetoVenta({ clienteData, carrito, metodoPago, referenciaPago, su
 }
 
 const METODOS_PAGO_DEFAULT = [
-  { id: 'punto-venta', nombre: 'Punto de Venta', etiqueta: 'Punto de Venta', icono: '💳', requiereReferencia: true, esBase: true },
-  { id: 'pago-movil', nombre: 'Pago Móvil', etiqueta: 'Pago Móvil', icono: '📱', requiereReferencia: true, esBase: true },
-  { id: 'transferencia', nombre: 'Transferencia Bancaria', etiqueta: 'Transferencia', icono: '🏦', requiereReferencia: true, esBase: true },
-  { id: 'efectivo', nombre: 'Efectivo', etiqueta: 'Efectivo ($ / Bs)', icono: '💵', requiereReferencia: false, esBase: true }
+  { id: 'punto-venta', nombre: 'Punto de Venta', etiqueta: 'Punto de Venta', icono: 'tarjeta', requiereReferencia: true, esBase: true },
+  { id: 'pago-movil', nombre: 'Pago Móvil', etiqueta: 'Pago Móvil', icono: 'movil', requiereReferencia: true, esBase: true },
+  { id: 'transferencia', nombre: 'Transferencia Bancaria', etiqueta: 'Transferencia', icono: 'banco', requiereReferencia: true, esBase: true },
+  { id: 'efectivo', nombre: 'Efectivo', etiqueta: 'Efectivo ($ / Bs)', icono: 'dolar', requiereReferencia: false, esBase: true }
 ];
 
-const ICONOS_METODO_SUGERIDOS = ['💸', '🪙', '💳', '📱', '🏦', '💵', '🌐'];
+const ICONOS_METODO_SUGERIDOS = ['dolar', 'moneda', 'tarjeta', 'movil', 'banco', 'globo'];
 
 export default function NuevaVenta({
   libros = [],
@@ -118,7 +119,7 @@ export default function NuevaVenta({
   // Estado para agregar nuevo método de pago (ej. Zelle, Binance, etc.)
   const [mostrarFormMetodo, setMostrarFormMetodo] = useState(false);
   const [nuevoMetodoNombre, setNuevoMetodoNombre] = useState('');
-  const [nuevoMetodoIcono, setNuevoMetodoIcono] = useState('💸');
+  const [nuevoMetodoIcono, setNuevoMetodoIcono] = useState('dolar');
   const [nuevoMetodoRequiereRef, setNuevoMetodoRequiereRef] = useState(true);
   const [errorMetodo, setErrorMetodo] = useState('');
 
@@ -151,7 +152,7 @@ export default function NuevaVenta({
         }
       }
       setNuevoMetodoNombre('');
-      setNuevoMetodoIcono('💸');
+      setNuevoMetodoIcono('dolar');
       setNuevoMetodoRequiereRef(true);
       setMostrarFormMetodo(false);
     } catch (err) {
@@ -392,14 +393,14 @@ export default function NuevaVenta({
       {/* Encabezado con Widget de Tasa del Día */}
       <div className="page-header pos-header-flex">
         <div>
-          <h2>🛒 Venta de Libros</h2>
+          <h2>Venta de Libros</h2>
           <p>Punto de venta directo con conversión automática a Bolívares (Bs.).</p>
         </div>
 
         {/* Widget de Tasa del Día en POS */}
         <div className="tasa-cambio-widget">
           <div className="tasa-display-box">
-            <span className="tasa-label">💵 Tasa Oficial BCV:</span>
+            <span className="tasa-label"><Icono nombre="dolar" size={14} style={{ marginRight: "4px" }} />Tasa Oficial BCV:</span>
             <strong className="tasa-valor">Bs. {tasaDelDia.toFixed(2)} / $</strong>
             <button 
               type="button" 
@@ -408,7 +409,7 @@ export default function NuevaVenta({
               disabled={consultandoTasa}
               title="Consultar y sincronizar tasa oficial en vivo desde la API de BCV (requiere internet)"
             >
-              {consultandoTasa ? '⏳ Sincronizando...' : '🔄 Sincronizar BCV'}
+              {consultandoTasa ? 'Sincronizando...' : <><Icono nombre="sincronizar" size={13} style={{ marginRight: "4px" }} />Sincronizar BCV</>}
             </button>
           </div>
         </div>
@@ -417,7 +418,7 @@ export default function NuevaVenta({
       {/* Alerta de Error si la hay */}
       {errorMensaje && (
         <div className="alert-warning-venta">
-          <span>⚠️ {errorMensaje}</span>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}><Icono nombre="alerta" size={16} /> {errorMensaje}</span>
           <button onClick={() => setErrorMensaje('')}>✕</button>
         </div>
       )}
@@ -442,7 +443,7 @@ export default function NuevaVenta({
                   setErrorMensaje('');
                 }}
               >
-                👥 Lector Registrado
+                <Icono nombre="usuarios" size={15} style={{ marginRight: "6px" }} />Lector Registrado
               </button>
               <button
                 type="button"
@@ -452,7 +453,7 @@ export default function NuevaVenta({
                   setErrorMensaje('');
                 }}
               >
-                👤 Lector General / Mostrador
+                <Icono nombre="usuario" size={15} style={{ marginRight: "6px" }} />Lector General / Mostrador
               </button>
             </div>
 
@@ -514,7 +515,7 @@ export default function NuevaVenta({
                 ) : (
                   /* Tarjeta de Lector Seleccionado */
                   <div className="item-seleccionado-card">
-                    <div className="seleccionado-icon">👤</div>
+                    <div className="seleccionado-icon" style={{ color: "#1e3a8a" }}><Icono nombre="usuario" size={20} /></div>
                     <div className="seleccionado-info">
                       <div className="seleccionado-title">{lectorSeleccionado.nombre}</div>
                       <div className="seleccionado-detail">
@@ -630,7 +631,7 @@ export default function NuevaVenta({
                           {libro.portada ? (
                             <img src={libro.portada} alt={libro.titulo} className="libro-dropdown-thumb" />
                           ) : (
-                            <div className="libro-dropdown-placeholder">📖</div>
+                            <div className="libro-dropdown-placeholder" style={{ color: "#1e3a8a" }}><Icono nombre="libro" size={18} /></div>
                           )}
                           <div className="item-main-info" style={{ flex: 1 }}>
                             <span className="item-title">{libro.titulo}</span>
@@ -657,7 +658,7 @@ export default function NuevaVenta({
                   {libroSeleccionado.portada ? (
                     <img src={libroSeleccionado.portada} alt={libroSeleccionado.titulo} className="libro-selected-thumb" />
                   ) : (
-                    <div className="libro-dropdown-placeholder">📖</div>
+                    <div className="libro-dropdown-placeholder" style={{ color: "#1e3a8a" }}><Icono nombre="libro" size={18} /></div>
                   )}
                   <div>
                     <div className="seleccionado-title">{libroSeleccionado.titulo}</div>
@@ -733,7 +734,7 @@ export default function NuevaVenta({
                             {item.portada ? (
                               <img src={item.portada} alt={item.titulo} className="libro-cart-thumb" />
                             ) : (
-                              <div className="libro-cart-placeholder">📖</div>
+                              <div className="libro-cart-placeholder" style={{ color: "#1e3a8a" }}><Icono nombre="libro" size={16} /></div>
                             )}
                             <div>
                               <div className="text-bold">{item.titulo}</div>
@@ -774,7 +775,7 @@ export default function NuevaVenta({
                             onClick={() => handleEliminarItem(item.id)}
                             title="Eliminar de la orden"
                           >
-                            🗑️
+                            <Icono nombre="basura" size={15} />
                           </button>
                         </td>
                       </tr>
@@ -814,7 +815,7 @@ export default function NuevaVenta({
                   }}
                   title="Agregar un nuevo método de pago (Exclusivo Administradores)"
                 >
-                  {mostrarFormMetodo ? '✕ Cancelar' : '➕ Agregar Método'}
+                  {mostrarFormMetodo ? '✕ Cancelar' : '+ Agregar Método'}
                 </button>
               )}
             </div>
@@ -822,9 +823,9 @@ export default function NuevaVenta({
             {/* Formulario desplegable para registrar un nuevo método de pago (Solo Administradores) */}
             {esAdmin && mostrarFormMetodo && (
               <div className="nuevo-metodo-box">
-                <div className="nuevo-metodo-title">✨ Nuevo Método de Pago</div>
+                <div className="nuevo-metodo-title">Nuevo Método de Pago</div>
                 {errorMetodo && (
-                  <div className="nuevo-metodo-error">⚠️ {errorMetodo}</div>
+                  <div className="nuevo-metodo-error"><Icono nombre="alerta" size={14} style={{ marginRight: "4px" }} />{errorMetodo}</div>
                 )}
                 <div className="nuevo-metodo-field">
                   <label className="form-label" style={{ fontSize: '0.78rem' }}>Nombre del método:</label>
@@ -847,7 +848,7 @@ export default function NuevaVenta({
                         className={`btn-icono-metodo ${nuevoMetodoIcono === ic ? 'active' : ''}`}
                         onClick={() => setNuevoMetodoIcono(ic)}
                       >
-                        {ic}
+                        <Icono nombre={ic} size={16} />
                       </button>
                     ))}
                   </div>
@@ -868,7 +869,7 @@ export default function NuevaVenta({
                     className="btn-primary btn-guardar-metodo"
                     onClick={handleCrearNuevoMetodo}
                   >
-                    💾 Guardar y Seleccionar
+                    Guardar y Seleccionar
                   </button>
                 </div>
               </div>
@@ -882,7 +883,7 @@ export default function NuevaVenta({
                     className={`btn-metodo-pago ${metodoPago === m.nombre ? 'active' : ''}`}
                     onClick={() => setMetodoPago(m.nombre)}
                   >
-                    <span className="metodo-icon">{m.icono || '💳'}</span>
+                    <span className="metodo-icon" style={{ display: "inline-flex", color: "currentColor" }}><Icono nombre={m.icono || "tarjeta"} size={18} /></span>
                     <span className="metodo-nombre">{m.etiqueta || m.nombre}</span>
                   </button>
                   {esAdmin && !m.esBase && (
@@ -920,7 +921,7 @@ export default function NuevaVenta({
                   {metodosInhabilitados.map((m) => (
                     <div key={m.id || m.nombre} className="metodo-inhabilitado-pill">
                       <span>
-                        {m.icono || '💳'} <strong>{m.nombre}</strong>
+                        <Icono nombre={m.icono || 'tarjeta'} size={14} style={{ marginRight: '4px' }} /> <strong>{m.nombre}</strong>
                         {m.totalVentas > 0 ? ` (${m.totalVentas} venta${m.totalVentas === 1 ? '' : 's'})` : ''}
                       </span>
                       <button
@@ -996,7 +997,7 @@ export default function NuevaVenta({
               onClick={handleProcesarVenta}
               disabled={carrito.length === 0}
             >
-              ✅ Procesar Venta y Emitir Recibo
+              <Icono nombre="check" size={18} style={{ marginRight: "6px" }} />Procesar Venta y Emitir Recibo
             </button>
           </div>
         </div>

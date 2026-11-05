@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './NuevaVenta.css';
 import ModalFactura from '../../components/ModalFactura/ModalFactura';
-import { apiConsultarTasaBCV } from '../../services/api';
+import { apiConsultarTasaBCV, obtenerTasaBCVInicial } from '../../services/api';
 import { capitalizarPalabras } from '../../utils/formatoTexto';
 import Icono from '../../components/Icono/Icono';
 
@@ -12,7 +12,7 @@ function crearObjetoVenta({ clienteData, carrito, metodoPago, referenciaPago, su
   const horaFormateada = fechaActual.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
   const randomSuffix = Math.floor(100000 + Math.random() * 900000);
   const nroFactura = `FAC-${randomSuffix}`;
-  const tasa = Number(tasaCambio) || 36.50;
+  const tasa = Number(tasaCambio) >= 400 ? Number(tasaCambio) : obtenerTasaBCVInicial();
   const sub = Number(subtotalBase) || 0;
   const iva = Number(montoIva) !== undefined ? Number(montoIva) : parseFloat((sub * 0.16).toFixed(2));
   const tot = Number(totalPagar) || parseFloat((sub + iva).toFixed(2));
@@ -86,12 +86,23 @@ export default function NuevaVenta({
   const [libroSeleccionado, setLibroSeleccionado] = useState(null);
   const [cantidadSeleccionada, setCantidadSeleccionada] = useState(1);
 
-  // Tasa de cambio oficial / del día (persistente en localStorage para soporte offline)
-  const [tasaDelDia, setTasaDelDia] = useState(() => {
-    const saved = localStorage.getItem('biblioteca_tasa_bcv');
-    return saved ? parseFloat(saved) : 36.50;
-  });
+  // Tasa de cambio oficial / del día (sincronizada automáticamente con la API BCV actualizada)
+  const [tasaDelDia, setTasaDelDia] = useState(() => obtenerTasaBCVInicial());
   const [consultandoTasa, setConsultandoTasa] = useState(false);
+
+  useEffect(() => {
+    let montado = true;
+    apiConsultarTasaBCV()
+      .then((res) => {
+        if (montado && res?.ok && res.tasa) {
+          setTasaDelDia(res.tasa);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      montado = false;
+    };
+  }, []);
 
   const handleSincronizarTasaBCV = async () => {
     try {

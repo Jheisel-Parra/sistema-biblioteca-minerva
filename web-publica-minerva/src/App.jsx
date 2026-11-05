@@ -32,14 +32,14 @@ function App() {
       const guardado = localStorage.getItem(CACHE_KEY);
       if (guardado) {
         const parsed = JSON.parse(guardado);
-        if (parsed.tasaBCV && Number(parsed.tasaBCV) > 40) {
+        if (parsed.tasaBCV && Number(parsed.tasaBCV) >= 400) {
           return Number(parsed.tasaBCV);
         }
       }
     } catch {
       // Ignorar
     }
-    return 88.62;
+    return 888.00;
   });
 
   const [busqueda, setBusqueda] = useState('');

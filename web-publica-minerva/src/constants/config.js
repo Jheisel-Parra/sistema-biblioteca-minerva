@@ -105,14 +105,14 @@ export const calcularDesgloseIva = (precioBase) => {
 };
 
 export const formatearBs = (montoUSD, tasaBCV) => {
-  const bs = (Number(montoUSD) || 0) * (Number(tasaBCV) || 88.62);
+  const bs = (Number(montoUSD) || 0) * (Number(tasaBCV) || 888.00);
   return `Bs. ${bs.toLocaleString('es-VE', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
   })}`;
 };
 
-export const construirLinkWhatsApp = (libro = null, tasaBCV = 88.62) => {
+export const construirLinkWhatsApp = (libro = null, tasaBCV = 888.00) => {
   let mensaje = '';
   if (libro) {
     const { total } = calcularDesgloseIva(libro.precio);

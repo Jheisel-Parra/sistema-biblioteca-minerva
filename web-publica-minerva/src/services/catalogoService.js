@@ -28,7 +28,7 @@ export async function obtenerCatalogoPublico() {
     if (data.ok && Array.isArray(data.libros)) {
       const tasaFinal =
         tasaDirecta ||
-        (data.tasaBCV && Number(data.tasaBCV) > 40 ? Number(data.tasaBCV) : 88.62);
+        (data.tasaBCV && Number(data.tasaBCV) >= 400 ? Number(data.tasaBCV) : 888.00);
 
       localStorage.setItem(
         CACHE_KEY,

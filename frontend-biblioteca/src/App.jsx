@@ -39,7 +39,9 @@ import {
   apiEliminarMetodoPago,
   apiRegistrarVenta,
   apiRegistrarEntrada,
-  apiRegistrarBaja
+  apiRegistrarBaja,
+  apiConsultarTasaBCV,
+  obtenerTasaBCVInicial
 } from './services/api';
 
 const METODOS_PAGO_INICIALES = [
@@ -246,6 +248,17 @@ function App() {
       exportarExcelDirecto: Boolean(opciones.exportarExcelDirecto)
     });
   };
+
+  // Sincronizar automáticamente la tasa oficial BCV actualizada al abrir la aplicación
+  useEffect(() => {
+    // Limpiar cualquier tasa antigua (< 400) que haya quedado en localStorage
+    const tasaInicial = obtenerTasaBCVInicial();
+    localStorage.setItem('biblioteca_tasa_bcv', tasaInicial.toString());
+
+    apiConsultarTasaBCV().catch(() => {
+      // Mantiene tasaInicial si no hay conexión momentánea
+    });
+  }, []);
 
   // Cargar datos sincronizados desde el Backend SQLite
   useEffect(() => {

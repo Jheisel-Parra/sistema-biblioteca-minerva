@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './HistorialVentas.css';
 import ModalFactura from '../../components/ModalFactura/ModalFactura';
 import Icono from '../../components/Icono/Icono';
+import { obtenerTasaBCVInicial } from '../../services/api';
 
 const METODOS_PAGO_DEFAULT = [
   { id: 'punto-venta', nombre: 'Punto de Venta', icono: 'tarjeta' },
@@ -55,7 +56,7 @@ export default function HistorialVentas({ ventas = [], onAbrirReporte, esAdmin =
         ? Number(v.montoIva)
         : parseFloat((subtotal * 0.16).toFixed(2));
     const total = parseFloat((subtotal + montoIva).toFixed(2));
-    const tasa = Number(v.tasaCambio) || 36.50;
+    const tasa = Number(v.tasaCambio) >= 400 ? Number(v.tasaCambio) : obtenerTasaBCVInicial();
     const totalBs = parseFloat((total * tasa).toFixed(2));
     return { subtotal, montoIva, total, tasa, totalBs };
   };

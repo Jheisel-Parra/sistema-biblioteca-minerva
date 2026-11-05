@@ -135,7 +135,7 @@ model Venta {
   porcentajeIva  Float          @default(16.0)  // Alícuota IVA Venezuela (16%)
   montoIva       Float          @default(0.0)   // Monto IVA (16%) en USD ($)
   total          Float          // Total Final con IVA en USD ($)
-  tasaCambio     Float          @default(36.50) // Tasa del día aplicada (Bs./USD)
+  tasaCambio     Float          @default(888.00) // Tasa del día aplicada (Bs./USD)
   totalBs        Float          @default(0.0)   // Total Final con IVA en Bolívares (Bs.)
   totalArticulos Int
   atendidoPor    String?

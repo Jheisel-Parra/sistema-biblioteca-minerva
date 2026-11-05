@@ -403,9 +403,37 @@
 
 @media (max-width: 768px) {
   .centro-reportes-container {
+    padding: 0.5rem 0;
+    gap: 1rem;
+  }
+  .centro-reportes-header {
+    padding: 1.15rem 1rem;
+  }
+  .centro-reportes-title h1 {
+    font-size: 1.25rem;
+  }
+  .centro-reportes-filtro-fechas {
     padding: 1rem;
   }
+  .filtro-fechas-controles {
+    gap: 0.65rem;
+  }
+  .filtro-fecha-campo {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .filtro-fecha-input {
+    flex: 1;
+    min-width: 0;
+  }
   .reportes-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .reporte-card {
+    padding: 1.15rem;
+  }
+  .reporte-card-actions {
     grid-template-columns: 1fr;
   }
 }

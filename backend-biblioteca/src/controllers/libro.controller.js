@@ -28,7 +28,7 @@ const obtenerTasaBCVOficial = async () => {
   } catch {
     // Continuar con respaldo si no hay internet
   }
-  return cacheTasaBCV.valor || 88.62;
+  return cacheTasaBCV.valor || 888.00;
 };
 
 // CATÁLOGO PÚBLICO DE SOLO LECTURA (SIN AUTENTICACIÓN, SIN COSTOS INTERNOS NI PROVEEDORES)

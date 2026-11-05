@@ -328,19 +328,59 @@ export const apiEliminarCategoria = async (id) => {
 // ==========================================
 // 9. TASA DE CAMBIO (BCV / OFICIAL)
 // ==========================================
+export const TASA_BCV_POR_DEFECTO = 888.00;
+
+export const obtenerTasaBCVInicial = () => {
+  try {
+    const guardada = parseFloat(localStorage.getItem('biblioteca_tasa_bcv'));
+    if (guardada && guardada >= 400) {
+      return guardada;
+    }
+  } catch {
+    // Ignorar error de lectura de localStorage
+  }
+  return TASA_BCV_POR_DEFECTO;
+};
+
 export const apiConsultarTasaBCV = async () => {
   try {
-    const res = await fetch('https://ve.dolarapi.com/v1/dolares/oficial');
+    const res = await fetch('https://ve.dolarapi.com/v1/dolares/oficial', {
+      cache: 'no-store'
+    });
     if (!res.ok) throw new Error('Error al conectar con el servicio de tasa oficial.');
     const data = await res.json();
     const tasa = parseFloat(data.promedio || data.precio || 0);
     if (!tasa || tasa <= 0) throw new Error('Respuesta de tasa inválida.');
+    const tasaRedondeada = parseFloat(tasa.toFixed(2));
+    try {
+      localStorage.setItem('biblioteca_tasa_bcv', tasaRedondeada.toString());
+    } catch {
+      // Ignorar si localStorage no está disponible
+    }
     return {
       ok: true,
-      tasa: parseFloat(tasa.toFixed(2)),
+      tasa: tasaRedondeada,
       fechaActualizacion: data.fechaActualizacion
     };
   } catch (err) {
+    try {
+      const respLocal = await fetch(`${API_BASE_URL}/libros/publico`, { cache: 'no-store' });
+      if (respLocal.ok) {
+        const dataLocal = await respLocal.json();
+        const tasaBackend = parseFloat(dataLocal.tasaBCV || 0);
+        if (tasaBackend >= 400) {
+          const tasaRedondeada = parseFloat(tasaBackend.toFixed(2));
+          localStorage.setItem('biblioteca_tasa_bcv', tasaRedondeada.toString());
+          return {
+            ok: true,
+            tasa: tasaRedondeada,
+            fechaActualizacion: new Date().toISOString()
+          };
+        }
+      }
+    } catch {
+      // Ignorar error de respaldo
+    }
     console.warn('Fallo al obtener tasa oficial en línea:', err.message);
     throw new Error('No se pudo conectar con la API de tasa oficial en este momento. Puedes ingresarla manualmente.', { cause: err });
   }

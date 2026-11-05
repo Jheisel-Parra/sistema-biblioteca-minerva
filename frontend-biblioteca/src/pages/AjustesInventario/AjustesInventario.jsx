@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './AjustesInventario.css';
-import { apiConsultarTasaBCV } from '../../services/api';
+import { apiConsultarTasaBCV, obtenerTasaBCVInicial } from '../../services/api';
 import Icono from '../../components/Icono/Icono';
 
 function crearRegistroAjusteBaja({ libro, cantidad, motivo, observaciones, rolUsuario }) {
@@ -60,14 +60,26 @@ export default function AjustesInventario({
   rolUsuario = 'admin',
   onAbrirReporte
 }) {
-  // Tasa de cambio del día (gestión administrativa con persistencia offline)
-  const [tasaDelDia, setTasaDelDia] = useState(() => {
-    const saved = localStorage.getItem('biblioteca_tasa_bcv');
-    return saved ? parseFloat(saved) : 36.50;
-  });
+  // Tasa de cambio del día (sincronizada automáticamente con la API BCV actualizada)
+  const [tasaDelDia, setTasaDelDia] = useState(() => obtenerTasaBCVInicial());
   const [editandoTasa, setEditandoTasa] = useState(false);
   const [tempTasa, setTempTasa] = useState(tasaDelDia);
   const [consultandoTasa, setConsultandoTasa] = useState(false);
+
+  useEffect(() => {
+    let montado = true;
+    apiConsultarTasaBCV()
+      .then((res) => {
+        if (montado && res?.ok && res.tasa) {
+          setTasaDelDia(res.tasa);
+          setTempTasa(res.tasa);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      montado = false;
+    };
+  }, []);
 
   const handleGuardarTasa = (e) => {
     e.preventDefault();

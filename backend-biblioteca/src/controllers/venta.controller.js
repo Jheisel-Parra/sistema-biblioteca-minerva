@@ -42,7 +42,7 @@ export const getVentas = async (req, res) => {
           Number(v.subtotal) > 0 && Number(v.total) >= subtotal + montoIva - 0.02
             ? parseFloat(Number(v.total).toFixed(2))
             : parseFloat((subtotal + montoIva).toFixed(2));
-        const tasa = Number(v.tasaCambio) || 36.50;
+        const tasa = Number(v.tasaCambio) >= 400 ? Number(v.tasaCambio) : 888.00;
         const totalBs = parseFloat((totalConIva * tasa).toFixed(2));
 
         return {
@@ -104,7 +104,7 @@ export const getVentas = async (req, res) => {
 export const registrarVenta = async (req, res) => {
   try {
     const { clienteId, items, metodoPago, referenciaPago, tasaCambio } = req.body;
-    const tasaNum = parseFloat(tasaCambio) > 0 ? parseFloat(tasaCambio) : 36.50;
+    const tasaNum = parseFloat(tasaCambio) >= 400 ? parseFloat(tasaCambio) : 888.00;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({

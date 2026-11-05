@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import './ModalReporte.css';
 import logo from '../../assets/Logo.png';
-import { apiGetSesionesBitacora } from '../../services/api';
+import { apiGetSesionesBitacora, apiConsultarTasaBCV, obtenerTasaBCVInicial } from '../../services/api';
 import Icono from '../Icono/Icono';
 
 /**
@@ -46,11 +46,21 @@ export default function ModalReporte({
   const ahora = new Date();
   const formatoYYYYMMDD = (d) => d.toISOString().split('T')[0];
 
-  // Tasa oficial BCV sincronizada en el sistema
-  const tasaBCV = useMemo(() => {
-    const guardada = localStorage.getItem('biblioteca_tasa_bcv');
-    const num = guardada ? parseFloat(guardada) : 36.50;
-    return num > 0 ? num : 36.50;
+  // Tasa oficial BCV sincronizada automáticamente con la API actualizada
+  const [tasaBCV, setTasaBCV] = useState(() => obtenerTasaBCVInicial());
+
+  useEffect(() => {
+    let montado = true;
+    apiConsultarTasaBCV()
+      .then((res) => {
+        if (montado && res?.ok && res.tasa) {
+          setTasaBCV(res.tasa);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      montado = false;
+    };
   }, []);
 
   const formatBs = (montoBs) =>
@@ -219,7 +229,7 @@ export default function ModalReporte({
   // DEFINICIONES DE LOS 10 REPORTES, TABLAS EN $ / BS., IVA (16%) Y GRÁFICAS
   // ========================================================
   const obtenerMontosVenta = (v) => {
-    const tasa = Number(v.tasaCambio) || tasaBCV;
+    const tasa = Number(v.tasaCambio) >= 400 ? Number(v.tasaCambio) : tasaBCV;
     const sumaItemsBase = (v.items || []).reduce(
       (acc, it) => acc + (Number(it.precio ?? it.precioUnitario) || 0) * (Number(it.cantidad) || 1),
       0

@@ -1,10 +1,11 @@
 import './ModalFactura.css';
 import logo from '../../assets/Logo.png';
+import { obtenerTasaBCVInicial } from '../../services/api';
 
 export default function ModalFactura({ venta, onClose }) {
   if (!venta) return null;
 
-  const tasa = Number(venta.tasaCambio) || 36.50;
+  const tasa = Number(venta.tasaCambio) >= 400 ? Number(venta.tasaCambio) : obtenerTasaBCVInicial();
   const sumaItemsBase = (venta.items || []).reduce(
     (acc, it) => acc + (Number(it.precio) || 0) * (Number(it.cantidad) || 1),
     0

@@ -148,6 +148,30 @@ export default function Sidebar({
 
         {/* Footer del Sidebar con información de cuenta y botón de Cerrar Sesión */}
         <div className="sidebar-footer">
+          <a
+            href={
+              typeof window !== 'undefined' &&
+              window.location.hostname !== 'localhost' &&
+              window.location.hostname !== '127.0.0.1'
+                ? `${window.location.origin}/catalogo/`
+                : 'http://localhost:5174'
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sidebar-btn"
+            style={{
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-start',
+              marginBottom: '8px',
+              background: 'rgba(212, 175, 55, 0.14)',
+              border: '1px solid rgba(212, 175, 55, 0.35)',
+              color: '#fef3c7'
+            }}
+          >
+            🌐 Ver Landing Pública
+          </a>
           {usuario?.email && (
             <div className="sidebar-user-info" title={usuario.email}>
               <small className="sidebar-user-email">📧 {usuario.email}</small>

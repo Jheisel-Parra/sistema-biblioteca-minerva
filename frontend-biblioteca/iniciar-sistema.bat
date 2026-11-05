@@ -8,6 +8,7 @@ echo   Iniciando servidores del sistema...
 echo ========================================================
 echo.
 
+set "PATH=C:\Program Files\nodejs;%PATH%"
 set "SCRIPT_DIR=%~dp0"
 set "FRONTEND_DIR=%SCRIPT_DIR%"
 set "BACKEND_DIR=%SCRIPT_DIR%..\backend-biblioteca"

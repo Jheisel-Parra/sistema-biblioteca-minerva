@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: sistema-biblioteca-minerva
+    env: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: file:./dev.db
+      - key: JWT_SECRET
+        value: biblioteca_jwt_secret_key_segura_2026_sistema

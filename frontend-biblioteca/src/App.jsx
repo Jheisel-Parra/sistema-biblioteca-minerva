@@ -59,7 +59,12 @@ function App() {
   const [paginaActual, setPaginaActual] = useState('metricas');
   const [sidebarAbierto, setSidebarAbierto] = useState(false);
   const [reporteActivo, setReporteActivo] = useState(null); // ID del reporte activo para visualización / PDF
-  const [rangoReporteActivo, setRangoReporteActivo] = useState({ fechaInicio: '', fechaFin: '', filtroMetodoPago: 'todos' });
+  const [rangoReporteActivo, setRangoReporteActivo] = useState({
+    fechaInicio: '',
+    fechaFin: '',
+    filtroMetodoPago: 'todos',
+    exportarExcelDirecto: false
+  });
 
   // Estados de datos principales
   const [distribuidores, setDistribuidores] = useState([]);
@@ -236,7 +241,8 @@ function App() {
     setRangoReporteActivo({
       fechaInicio: opciones.fechaInicio !== undefined ? opciones.fechaInicio : '',
       fechaFin: opciones.fechaFin !== undefined ? opciones.fechaFin : '',
-      filtroMetodoPago: opciones.filtroMetodoPago || 'todos'
+      filtroMetodoPago: opciones.filtroMetodoPago || 'todos',
+      exportarExcelDirecto: Boolean(opciones.exportarExcelDirecto)
     });
   };
 
@@ -636,6 +642,10 @@ function App() {
             fechaFinProp={rangoReporteActivo.fechaFin}
             filtroMetodoPagoProp={rangoReporteActivo.filtroMetodoPago}
             metodosPago={metodosPago}
+            exportarExcelDirecto={rangoReporteActivo.exportarExcelDirecto}
+            onExcelExportado={() =>
+              setRangoReporteActivo((prev) => ({ ...prev, exportarExcelDirecto: false }))
+            }
           />
         )}
       </main>

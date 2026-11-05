@@ -116,6 +116,27 @@
   color: white;
 }
 
+.btn-reporte-excel {
+  background: #107c41;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(16, 124, 65, 0.3);
+}
+
+.btn-reporte-excel:hover {
+  background: #0b5c30;
+  transform: translateY(-1px);
+}
+
 .btn-reporte-print {
   background: #2563eb;
   color: white;

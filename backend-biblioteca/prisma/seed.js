@@ -28,6 +28,8 @@ async function main() {
 
   // 2. Crear Usuarios (Personal del Sistema) con contraseñas encriptadas
   const hashedPasswordAdmin = await bcrypt.hash('admin123', 10);
+  const hashedPasswordSisge = await bcrypt.hash('sis2026', 10);
+  const hashedPasswordPaola = await bcrypt.hash('123456', 10);
   const hashedPasswordStaff = await bcrypt.hash('staff123', 10);
 
   const admin = await prisma.usuario.create({
@@ -39,6 +41,34 @@ async function main() {
       password: hashedPasswordAdmin,
       rol: 'admin',
       estado: 'Activo'
+    }
+  });
+
+  await prisma.usuario.create({
+    data: {
+      cedula: 'V-19202600',
+      nombre: 'sisge2026',
+      fechaNacimiento: '1988-05-15',
+      email: 'sisge2026@gmail.com',
+      password: hashedPasswordSisge,
+      rol: 'admin',
+      estado: 'Activo',
+      totpSecret: null,
+      totpHabilitado: false
+    }
+  });
+
+  await prisma.usuario.create({
+    data: {
+      cedula: 'V-18543210',
+      nombre: 'Profesora Paola',
+      fechaNacimiento: '1988-05-15',
+      email: 'paola@gmail.com',
+      password: hashedPasswordPaola,
+      rol: 'admin',
+      estado: 'Activo',
+      totpSecret: null,
+      totpHabilitado: false
     }
   });
 

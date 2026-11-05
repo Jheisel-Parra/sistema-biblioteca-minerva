@@ -1,6 +1,13 @@
 // Cliente de comunicación HTTP con el Backend SQLite (Puerto 4000)
 
-const API_BASE_URL = 'http://localhost:4000/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (typeof window !== 'undefined' &&
+  window.location.hostname !== 'localhost' &&
+  window.location.hostname !== '127.0.0.1' &&
+  window.location.port !== '5173'
+    ? `${window.location.origin}/api`
+    : 'http://localhost:4000/api');
 
 /**
  * Obtener el token JWT guardado en el navegador

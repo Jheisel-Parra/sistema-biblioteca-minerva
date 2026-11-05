@@ -1,0 +1,10 @@
+{
+  "name": "sistema-biblioteca-minerva",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "cd backend-biblioteca && npm install && npx prisma generate && cd ../frontend-biblioteca && npm install && npm run build && cd ../web-publica-minerva && npm install && npm run build",
+    "start": "cd backend-biblioteca && node src/index.js"
+  }
+}

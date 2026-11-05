@@ -37,7 +37,9 @@ export default function ModalReporte({
   fechaInicioProp = '',
   fechaFinProp = '',
   filtroMetodoPagoProp = 'todos',
-  metodosPago
+  metodosPago,
+  exportarExcelDirecto = false,
+  onExcelExportado
 }) {
   const metodosDisponibles = metodosPago && metodosPago.length > 0 ? metodosPago : METODOS_PAGO_DEFAULT;
   const ahora = new Date();
@@ -60,10 +62,17 @@ export default function ModalReporte({
   const renderMontoDual = (montoUSD, montoBsExplicito = null, prefijo = '') => {
     const usd = Number(montoUSD || 0);
     const bs = montoBsExplicito !== null && montoBsExplicito !== undefined ? Number(montoBsExplicito) : usd * tasaBCV;
+    const textoUsd = `${prefijo}$${usd.toFixed(2)}`;
+    const textoBs = `${prefijo}${formatBs(bs)}`;
     return (
-      <div className="celda-monto-dual">
-        <span className="monto-usd">{prefijo}${usd.toFixed(2)}</span>
-        <span className="monto-bs">{prefijo}{formatBs(bs)}</span>
+      <div
+        className="celda-monto-dual"
+        data-excel={`${textoUsd} | ${textoBs}`}
+        data-usd={textoUsd}
+        data-bs={textoBs}
+      >
+        <span className="monto-usd">{textoUsd}</span>
+        <span className="monto-bs">{textoBs}</span>
       </div>
     );
   };
@@ -122,6 +131,7 @@ export default function ModalReporte({
   }, [filtroMetodoPagoProp]);
 
   const [sesionesData, setSesionesData] = useState([]);
+  const [sesionesCargadas, setSesionesCargadas] = useState(tipoReporte !== 'trazabilidad-horarios');
 
   // Cálculo en vivo del intervalo seleccionado por el usuario
   const calculoRangoTexto = useMemo(() => {
@@ -157,11 +167,15 @@ export default function ModalReporte({
 
   useEffect(() => {
     if (tipoReporte === 'trazabilidad-horarios') {
+      setSesionesCargadas(false);
       apiGetSesionesBitacora({ limit: 300 })
         .then((res) => {
           if (res.ok) setSesionesData(res.sesiones || []);
         })
-        .catch((err) => console.warn('Error cargando sesiones para reporte:', err));
+        .catch((err) => console.warn('Error cargando sesiones para reporte:', err))
+        .finally(() => setSesionesCargadas(true));
+    } else {
+      setSesionesCargadas(true);
     }
   }, [tipoReporte]);
 
@@ -1130,6 +1144,212 @@ export default function ModalReporte({
     return { total, maxVal, segmentos };
   }, [reporteConfig]);
 
+  // Extraer texto plano de cualquier celda (incluyendo elementos JSX de monto dual)
+  const extraerTextoCeldaExcel = (celda) => {
+    if (celda === null || celda === undefined) return '';
+    if (typeof celda === 'object') {
+      if (celda.props && celda.props['data-excel']) {
+        return String(celda.props['data-excel']);
+      }
+      if (Array.isArray(celda.props?.children)) {
+        return celda.props.children.map(extraerTextoCeldaExcel).join(' ');
+      }
+      if (celda.props?.children) {
+        return extraerTextoCeldaExcel(celda.props.children);
+      }
+      return '';
+    }
+    return String(celda);
+  };
+
+  const escaparHtmlExcel = (texto) =>
+    String(texto ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+  // Exportar la tabla y resumen del reporte actual a una hoja de cálculo Microsoft Excel (.xls)
+  const handleExportarExcel = () => {
+    const numCols = Math.max(reporteConfig.columnas.length, 4);
+    const periodoTexto =
+      !fechaInicio && !fechaFin
+        ? 'Todo el Histórico Registrado'
+        : fechaInicio && fechaFin
+        ? `Del ${formatearFechaVisual(fechaInicio)} al ${formatearFechaVisual(fechaFin)}`
+        : fechaInicio
+        ? `Desde el ${formatearFechaVisual(fechaInicio)}`
+        : `Hasta el ${formatearFechaVisual(fechaFin)}`;
+
+    const filasKpiHtml = (reporteConfig.kpis || [])
+      .map(
+        (k) => `
+        <tr>
+          <td colspan="2" style="background:#f8fafc; font-weight:700; border:1px solid #cbd5e1; padding:6px; color:#334155;">${escaparHtmlExcel(k.label)}</td>
+          <td colspan="${Math.max(2, numCols - 2)}" style="background:#ffffff; font-weight:700; border:1px solid #cbd5e1; padding:6px; color:#0f172a;">
+            ${escaparHtmlExcel(k.valor)}${k.sub ? ` (${escaparHtmlExcel(k.sub)})` : ''}
+          </td>
+        </tr>`
+      )
+      .join('');
+
+    const cabecerasTablaHtml = reporteConfig.columnas
+      .map(
+        (col) =>
+          `<th style="background:#1e3a8a; color:#ffffff; font-weight:700; border:1px solid #1e3a8a; padding:8px; text-align:center;">${escaparHtmlExcel(col)}</th>`
+      )
+      .join('');
+
+    const filasTablaHtml =
+      reporteConfig.filas.length === 0
+        ? `<tr><td colspan="${reporteConfig.columnas.length}" style="text-align:center; padding:14px; border:1px solid #cbd5e1; color:#64748b;">Sin movimientos registrados en este período</td></tr>`
+        : reporteConfig.filas
+            .map((fila, rIdx) => {
+              const bgFila = rIdx % 2 === 0 ? '#ffffff' : '#f8fafc';
+              const celdasHtml = fila
+                .map((celda) => {
+                  const texto = extraerTextoCeldaExcel(celda);
+                  const alinearDerecha =
+                    texto.startsWith('$') ||
+                    texto.startsWith('+$') ||
+                    texto.startsWith('Bs.') ||
+                    texto.endsWith('%') ||
+                    texto.endsWith('uds.') ||
+                    typeof celda === 'number';
+                  return `<td style="background:${bgFila}; border:1px solid #cbd5e1; padding:6px 8px; text-align:${alinearDerecha ? 'right' : 'left'}; mso-number-format:'\\@';">${escaparHtmlExcel(texto)}</td>`;
+                })
+                .join('');
+              return `<tr>${celdasHtml}</tr>`;
+            })
+            .join('');
+
+    const filaTotalesHtml = reporteConfig.totales
+      ? `<tr>${reporteConfig.totales
+          .map((tot) => {
+            const texto = extraerTextoCeldaExcel(tot);
+            return `<td style="background:#e2e8f0; color:#0f172a; font-weight:800; border:1px solid #94a3b8; border-top:2px solid #1e3a8a; padding:8px; text-align:right; mso-number-format:'\\@';">${escaparHtmlExcel(texto)}</td>`;
+          })
+          .join('')}</tr>`
+      : '';
+
+    const filasGraficaHtml =
+      datosGraficaProcesados.segmentos.length > 0
+        ? `
+        <tr><td colspan="${numCols}"></td></tr>
+        <tr>
+          <td colspan="${numCols}" style="background:#1e293b; color:#ffffff; font-weight:700; padding:7px; border:1px solid #1e293b;">
+            RESUMEN DE DISTRIBUCIÓN GRÁFICA: ${escaparHtmlExcel(reporteConfig.grafica.titulo.toUpperCase())}
+          </td>
+        </tr>
+        <tr>
+          <th colspan="2" style="background:#334155; color:#ffffff; font-weight:700; border:1px solid #334155; padding:6px;">Ítem / Categoría</th>
+          <th colspan="2" style="background:#334155; color:#ffffff; font-weight:700; border:1px solid #334155; padding:6px;">Valor Registrado</th>
+          <th colspan="${Math.max(1, numCols - 4)}" style="background:#334155; color:#ffffff; font-weight:700; border:1px solid #334155; padding:6px;">Participación (%)</th>
+        </tr>
+        ${datosGraficaProcesados.segmentos
+          .map((seg) => {
+            const valorTexto = reporteConfig.grafica.esMonetario
+              ? `$${seg.valor.toFixed(2)} | ${formatBs(seg.valor * tasaBCV)}`
+              : `${seg.valor} ${reporteConfig.grafica.unidad || 'uds.'}`;
+            return `
+            <tr>
+              <td colspan="2" style="border:1px solid #cbd5e1; padding:6px;">${escaparHtmlExcel(seg.etiqueta)}</td>
+              <td colspan="2" style="border:1px solid #cbd5e1; padding:6px; text-align:right; font-weight:700;">${escaparHtmlExcel(valorTexto)}</td>
+              <td colspan="${Math.max(1, numCols - 4)}" style="border:1px solid #cbd5e1; padding:6px; text-align:right;">${seg.porcentaje.toFixed(1)}%</td>
+            </tr>`;
+          })
+          .join('')}`
+        : '';
+
+    const contenidoHtmlExcel = `\uFEFF<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!--[if gte mso 9]>
+        <xml>
+          <x:ExcelWorkbook>
+            <x:ExcelWorksheets>
+              <x:ExcelWorksheet>
+                <x:Name>Reporte_${reporteConfig.numero}</x:Name>
+                <x:WorksheetOptions>
+                  <x:DisplayGridlines/>
+                </x:WorksheetOptions>
+              </x:ExcelWorksheet>
+            </x:ExcelWorksheets>
+          </x:ExcelWorkbook>
+        </xml>
+        <![endif]-->
+      </head>
+      <body style="font-family: Arial, sans-serif; font-size: 10pt;">
+        <table border="1" cellspacing="0" cellpadding="4" style="border-collapse:collapse; width:100%;">
+          <tr>
+            <td colspan="${numCols}" style="background:#1e3a8a; color:#ffffff; font-size:14pt; font-weight:800; padding:10px; text-align:center;">
+              LIBRERÍA &amp; CENTRO CULTURAL MINERVA, C.A. (R.I.F.: J-40192837-0)
+            </td>
+          </tr>
+          <tr>
+            <td colspan="${numCols}" style="background:#eff6ff; color:#1e3a8a; font-size:11pt; font-weight:700; padding:8px; text-align:center;">
+              REPORTE N° ${reporteConfig.numero}: ${escaparHtmlExcel(reporteConfig.titulo.toUpperCase())}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background:#f8fafc; font-weight:700;">Período Auditado:</td>
+            <td colspan="${Math.max(1, numCols - 2)}">${escaparHtmlExcel(periodoTexto)}${filtroMetodoPago !== 'todos' ? ` (Método de Pago: ${escaparHtmlExcel(filtroMetodoPago)})` : ''}</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background:#f8fafc; font-weight:700;">Fecha y Hora de Emisión:</td>
+            <td colspan="${Math.max(1, numCols - 2)}">${escaparHtmlExcel(fechaEmision.fecha)} - ${escaparHtmlExcel(fechaEmision.hora)}</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="background:#f8fafc; font-weight:700;">Generado por:</td>
+            <td colspan="${Math.max(1, numCols - 2)}">${escaparHtmlExcel(usuarioActual?.nombre || 'Administrador')} | Tasa Oficial BCV Ref.: Bs. ${tasaBCV.toFixed(2)} / USD</td>
+          </tr>
+          <tr><td colspan="${numCols}"></td></tr>
+          <tr>
+            <td colspan="${numCols}" style="background:#1e293b; color:#ffffff; font-weight:700; padding:6px;">
+              INDICADORES EJECUTIVOS DEL REPORTE (KPIs)
+            </td>
+          </tr>
+          ${filasKpiHtml}
+          <tr><td colspan="${numCols}"></td></tr>
+          <tr>
+            <td colspan="${numCols}" style="background:#1e293b; color:#ffffff; font-weight:700; padding:6px;">
+              DETALLE TABULAR DEL REPORTE
+            </td>
+          </tr>
+          <tr>${cabecerasTablaHtml}</tr>
+          ${filasTablaHtml}
+          ${filaTotalesHtml}
+          ${filasGraficaHtml}
+        </table>
+      </body>
+    </html>`;
+
+    const blob = new Blob([contenidoHtmlExcel], {
+      type: 'application/vnd.ms-excel;charset=utf-8;'
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const slugTitulo = reporteConfig.titulo
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-zA-Z0-9]+/g, '_')
+      .replace(/^_|_$/g, '');
+    const fechaArchivo = formatoYYYYMMDD(new Date());
+    link.href = url;
+    link.download = `Reporte_0${reporteConfig.numero}_${slugTitulo}_${fechaArchivo}.xls`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  useEffect(() => {
+    if (exportarExcelDirecto && sesionesCargadas) {
+      handleExportarExcel();
+      if (onExcelExportado) onExcelExportado();
+    }
+  }, [exportarExcelDirecto, sesionesCargadas]);
+
   return (
     <div className="modal-reporte-overlay" onClick={onClose}>
       <div className="modal-reporte-window" onClick={(e) => e.stopPropagation()}>
@@ -1197,8 +1417,11 @@ export default function ModalReporte({
               </button>
             </div>
 
+            <button type="button" className="btn-reporte-excel" onClick={handleExportarExcel}>
+              📊 Exportar a Excel
+            </button>
             <button type="button" className="btn-reporte-print" onClick={handlePrint}>
-              Imprimir / Guardar PDF
+              🖨️ Imprimir / Guardar PDF
             </button>
             <button type="button" className="btn-reporte-close" onClick={onClose}>
               Cerrar

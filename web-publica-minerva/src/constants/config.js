@@ -1,4 +1,16 @@
-export const API_URL_PUBLICO = 'http://localhost:4000/api/libros/publico';
+const detectarUrlApiPublica = () => {
+  if (typeof window === 'undefined') return 'http://localhost:4000/api/libros/publico';
+  const host = window.location.hostname;
+  if (host === 'localhost' || host === '127.0.0.1') {
+    return 'http://localhost:4000/api/libros/publico';
+  }
+  if (host.endsWith('github.io') || window.location.protocol === 'file:') {
+    return 'https://sistema-biblioteca-minerva.onrender.com/api/libros/publico';
+  }
+  return `${window.location.origin}/api/libros/publico`;
+};
+
+export const API_URL_PUBLICO = detectarUrlApiPublica();
 export const API_DOLAR_BCV = 'https://ve.dolarapi.com/v1/dolares/oficial';
 export const CACHE_KEY = 'minerva_catalogo_publico_cache_v3';
 

@@ -15,11 +15,8 @@ dist/
 dist-ssr/
 */dist/
 
-# SQLite Databases & backups
-*.db
+# SQLite temporary journal files
 *.db-journal
-prisma/*.db
-*/prisma/*.db
 
 # OS Files
 .DS_Store

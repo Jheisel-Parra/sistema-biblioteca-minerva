@@ -435,13 +435,30 @@ export default function CentroReportes({
               </div>
             </div>
 
-            <button
-              type="button"
-              className="btn-launch-report"
-              onClick={() => onAbrirReporte(rep.id, { fechaInicio, fechaFin, filtroMetodoPago })}
-            >
-              Generar Reporte PDF
-            </button>
+            <div className="reporte-card-actions">
+              <button
+                type="button"
+                className="btn-launch-report"
+                onClick={() => onAbrirReporte(rep.id, { fechaInicio, fechaFin, filtroMetodoPago })}
+              >
+                📄 Generar PDF
+              </button>
+              <button
+                type="button"
+                className="btn-launch-excel"
+                onClick={() =>
+                  onAbrirReporte(rep.id, {
+                    fechaInicio,
+                    fechaFin,
+                    filtroMetodoPago,
+                    exportarExcelDirecto: true
+                  })
+                }
+                title="Descargar directamente la tabla de este reporte en formato Microsoft Excel (.xls)"
+              >
+                📊 Exportar Excel
+              </button>
+            </div>
           </div>
         ))}
       </div>

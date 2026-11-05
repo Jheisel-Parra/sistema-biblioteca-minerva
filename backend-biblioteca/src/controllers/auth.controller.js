@@ -33,12 +33,20 @@ export const login = async (req, res) => {
     }
 
     const valorBuscado = emailOrCedula.trim();
+    const valorMin = valorBuscado.toLowerCase();
+    const variantesEmail = [valorMin];
+    if (!valorMin.includes('@')) {
+      variantesEmail.push(`${valorMin}@gmail.com`);
+    } else if (valorMin.endsWith('@gmail.con')) {
+      variantesEmail.push(valorMin.replace(/@gmail\.con$/, '@gmail.com'));
+    }
 
-    // Buscar usuario por correo o por cédula
+    // Buscar usuario por correo, nombre de usuario o por cédula
     let usuario = await prisma.usuario.findFirst({
       where: {
         OR: [
-          { email: valorBuscado.toLowerCase() },
+          ...variantesEmail.map((em) => ({ email: em })),
+          { nombre: valorBuscado },
           { cedula: valorBuscado },
           { cedula: valorBuscado.toUpperCase() }
         ]

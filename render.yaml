@@ -11,4 +11,4 @@ services:
       - key: DATABASE_URL
         value: file:./dev.db
       - key: JWT_SECRET
-        value: biblioteca_jwt_secret_key_segura_2026_sistema
+        generateValue: true
